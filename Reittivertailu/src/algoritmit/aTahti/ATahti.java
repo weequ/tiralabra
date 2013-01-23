@@ -6,6 +6,7 @@ package algoritmit.aTahti;
 
 import algoritmit.LyhimmanPolunAlgoritmi;
 import ruudukko.Ruudukko;
+import ruudukko.Ruutu;
 
 /**
  *
@@ -19,6 +20,11 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
     
     @Override
     public boolean etene() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Ruutu[] getTulos() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     

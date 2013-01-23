@@ -4,6 +4,7 @@
  */
 package reittivertailu;
 
+import algoritmit.dijkstra.Dijkstra;
 import java.io.FileNotFoundException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,11 +13,13 @@ import ruudukko.Ruudukko;
 import tiedostonLuku.Lukija;
 
 /**
- *
+ * KESKENERÄINEN
  * @author Antti
  */
 public class Reittivertailu {
 
+    private Ruudukko ruudukko;
+    
     public Reittivertailu() {
         Lukija lukija = null;
         try {
@@ -26,12 +29,18 @@ public class Reittivertailu {
             System.exit(0);
         }
         try {
-            GUI gui = new GUI(new Ruudukko(lukija.getText()));
-            gui.pack();
+            ruudukko = new Ruudukko(lukija.getText());
         } catch (Exception ex) {
             Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
         }
+        ruudukko.setLahto(0, 0);
+        ruudukko.setMaali(ruudukko.getLeveys()-1, ruudukko.getKorkeus()-1);
+        GUI gui = new GUI(ruudukko);
+        gui.pack();
+        Dijkstra dijkstra = new Dijkstra(ruudukko);
+        dijkstra.suorita(5);
+        System.out.println("valmis!");
     }
     public static void main(String[] args) {
         new Reittivertailu();

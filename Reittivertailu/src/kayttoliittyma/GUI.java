@@ -4,13 +4,15 @@
  */
 package kayttoliittyma;
 
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import reittivertailu.Reittivertailu;
 import ruudukko.Ruudukko;
 
 /**
- *
+ * Keskeneräinen!!!
  * @author Antti
  */
 public class GUI extends JFrame {
@@ -21,7 +23,8 @@ public class GUI extends JFrame {
         setTitle("");
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        JScrollPane ikkuna = new JScrollPane(new KarttaKangas(ruudukko));
+        final KarttaKangas k = new KarttaKangas(ruudukko);
+        JScrollPane ikkuna = new JScrollPane(k);
         add(ikkuna);
     }
     

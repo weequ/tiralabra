@@ -4,19 +4,27 @@
  */
 package ruudukko;
 
+import java.util.ArrayList;
+import javax.swing.event.ChangeListener;
+
 /**
- *
+ * Ruudukkoon kuuluva koordinaatti, solmu, jota reitinhakualgoritmit voivat käyttää.
  * @author Antti
+ * @see Ruudukko
  */
 public class Ruutu {
-    
+
+    private Ruudukko ruudukko;
     private boolean este;
-    private boolean kayty;
+    private boolean kasitelty;
     private int x;
     private int y;
+    private double etaisyysAlusta;
         
-    public Ruutu(char ruutu, int x, int y) throws Exception {
-        kayty = false;
+    public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
+        this.ruudukko = ruudukko;
+        kasitelty = false;
+        etaisyysAlusta = Double.POSITIVE_INFINITY;
         switch (ruutu) {
             case '#':
                 este = true;
@@ -42,4 +50,29 @@ public class Ruutu {
         return y;
     }
     
+    public Ruutu[] getNaapurit() {
+        return new Ruutu[] {
+            ruudukko.getRuutu(x-1, y),
+            ruudukko.getRuutu(x+1, y),
+            ruudukko.getRuutu(x, y-1),
+            ruudukko.getRuutu(x, y+1)
+        };
+    }
+    
+    public void setEtaisyysAlusta(double etaisyys) {
+        this.etaisyysAlusta = etaisyys;
+    }
+    
+    public double getEtaisyysAlusta() {
+        return etaisyysAlusta;
+    }
+    
+    public void setKasitelty() {
+        kasitelty = true;
+    }
+    
+    public boolean onkoKasitelty() {
+        return kasitelty;
+    }
+ 
 }
