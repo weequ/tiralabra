@@ -2,11 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package algoritmit.dijkstra;
+package algoritmit.bFS;
 
 import algoritmit.LyhimmanPolunAlgoritmi;
-import java.util.HashMap;
-import java.util.PriorityQueue;
+import java.util.ArrayDeque;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
 
@@ -14,11 +13,11 @@ import ruudukko.Ruutu;
  *
  * @author Antti
  */
-public class Dijkstra extends LyhimmanPolunAlgoritmi {
+public class BFS extends LyhimmanPolunAlgoritmi{
     
-    public Dijkstra(Ruudukko ruudukko) {
+    public BFS(Ruudukko ruudukko) {
         super(ruudukko);
-        ruutuJono = new PriorityQueue<>(11, new DijkstraEtaisyyksienVertailija());
+        ruutuJono = new ArrayDeque<Ruutu>();
         ruutuJono.add(ruudukko.getLahto());
         ruudukko.getLahto().setKasitelty();
     }
@@ -27,10 +26,9 @@ public class Dijkstra extends LyhimmanPolunAlgoritmi {
     public boolean etene() {
         int koko = ruutuJono.size();
         System.out.println(koko);
-        if (koko == 0) return false;//Algoritmi ei päässyt loppuun
+        if (koko == 0) return false;
         for (int i = 0; i < koko; i++) {
             Ruutu kasiteltavaRuutu = ruutuJono.poll();
-            kasiteltavaRuutu.setKasitelty();
             for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
                 if (naapuri == null) {
                     //System.out.println("null");
@@ -44,15 +42,17 @@ public class Dijkstra extends LyhimmanPolunAlgoritmi {
                     //System.out.println("kasitelty");
                     continue;
                 }
-                if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus()) {
-                    naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus());
-                    naapuri.setEdellinen(kasiteltavaRuutu);
-                }
-                if (!ruutuJono.contains(naapuri)) ruutuJono.offer(naapuri);
+                //if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+1) {
+                naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+1);
+                //} 
+                naapuri.setKasitelty();
+                ruutuJono.offer(naapuri);
                 //System.out.println("lisays: "+ruutuJono.offer(naapuri));
             }
         }
         return true;
     }
+
+    
     
 }

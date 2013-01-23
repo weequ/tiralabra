@@ -4,8 +4,6 @@
  */
 package ruudukko;
 
-import java.util.ArrayList;
-import javax.swing.event.ChangeListener;
 
 /**
  * Ruudukkoon kuuluva koordinaatti, solmu, jota reitinhakualgoritmit voivat käyttää.
@@ -17,24 +15,36 @@ public class Ruutu {
     private Ruudukko ruudukko;
     private boolean este;
     private boolean kasitelty;
+    private int kustannus;
     private int x;
     private int y;
     private double etaisyysAlusta;
+    private Ruutu edellinen;
         
     public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
         this.ruudukko = ruudukko;
+        edellinen = null;
+        this.x = x;
+        this.y = y;
         kasitelty = false;
         etaisyysAlusta = Double.POSITIVE_INFINITY;
-        switch (ruutu) {
-            case '#':
-                este = true;
-                break;
-            case '.':
-                este = false;
-                break;
-            default:
-                throw new Exception("Väärä merkki: '"+ruutu+"'. Hyväksytyt merkit: '#' ja '.'");
-        }
+        if (ruutu >= '0' && ruutu <= '9') {
+            este = false;
+            kustannus = ruutu-'0';
+        } else {
+            switch (ruutu) {
+                case '-': kustannus = -1;
+                case '#':
+                    este = true;
+                    break;
+                case '.':
+                    kustannus = 1;
+                    este = false;
+                    break;
+                default:
+                    throw new Exception("Väärä merkki: '"+ruutu+"'. Hyväksytyt merkit: '#' ja '.'");
+            }
+       }
         
     }
     
@@ -64,7 +74,7 @@ public class Ruutu {
     }
     
     public double getEtaisyysAlusta() {
-        return etaisyysAlusta;
+        return (int) etaisyysAlusta;
     }
     
     public void setKasitelty() {
@@ -73,6 +83,18 @@ public class Ruutu {
     
     public boolean onkoKasitelty() {
         return kasitelty;
+    }
+    
+    public int getKustannus() {
+        return kustannus;
+    }
+    
+    public Ruutu getEdellinen() {
+        return edellinen;
+    }
+    
+    public void setEdellinen(Ruutu edellinen) {
+        this.edellinen = edellinen;
     }
  
 }

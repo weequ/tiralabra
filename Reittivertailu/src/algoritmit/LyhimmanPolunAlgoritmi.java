@@ -5,6 +5,7 @@
 package algoritmit;
 
 import java.util.Queue;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ruudukko.Ruudukko;
@@ -16,7 +17,7 @@ import ruudukko.Ruutu;
  */
 public abstract class LyhimmanPolunAlgoritmi {
     
-    protected Queue<Ruutu> ruutuJono;//Dijkstra: ArrayDequeue, A*: PriorityQueue
+    protected Queue<Ruutu> ruutuJono;
     
     /**
      *Algoritmin käyttämä ruudukko, eli verkko.
@@ -35,9 +36,17 @@ public abstract class LyhimmanPolunAlgoritmi {
     
     /**
      * Hakee lyhimmän polun maalista lähtöön.
-     * @return Lyhin polku maalista lähtöön.
+     * @return Lyhin polku jossa lahto paallimmaisena ja maali viimeisenä.
      */
-    public abstract Ruutu[] getTulos();
+    public Stack<Ruutu> getTulos() {
+        Ruutu r = ruudukko.getMaali();
+        Stack<Ruutu> ruutuPino = new Stack<>();
+        while (r!=null) {
+            ruutuPino.add(r);
+            r = r.getEdellinen();
+        }
+        return ruutuPino;
+    }
     
     /**
      * Suorittaa yhden vaiheen algoritmista.

@@ -4,9 +4,11 @@
  */
 package kayttoliittyma;
 
+import java.awt.Color;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import reittivertailu.Reittivertailu;
 import ruudukko.Ruudukko;
@@ -24,9 +26,14 @@ public class GUI extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         final KarttaKangas k = new KarttaKangas(ruudukko);
-        JScrollPane ikkuna = new JScrollPane(k);
+        JPanel paneeli = new JPanel();
+        JScrollPane ikkuna = new JScrollPane(paneeli);
+        paneeli.add(k);
         add(ikkuna);
+        paneeli.setAutoscrolls(false);
+        paneeli.setBackground(Color.WHITE);
     }
+    
     
     
 }
