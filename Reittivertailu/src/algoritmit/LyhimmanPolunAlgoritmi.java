@@ -4,7 +4,6 @@
  */
 package algoritmit;
 
-import java.util.Queue;
 import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,8 +15,6 @@ import ruudukko.Ruutu;
  * @author Antti
  */
 public abstract class LyhimmanPolunAlgoritmi {
-    
-    protected Queue<Ruutu> ruutuJono;
     
     /**
      *Algoritmin käyttämä ruudukko, eli verkko.

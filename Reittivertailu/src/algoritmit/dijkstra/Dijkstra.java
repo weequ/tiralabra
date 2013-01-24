@@ -16,6 +16,8 @@ import ruudukko.Ruutu;
  */
 public class Dijkstra extends LyhimmanPolunAlgoritmi {
     
+    private PriorityQueue<Ruutu> ruutuJono;
+    
     public Dijkstra(Ruudukko ruudukko) {
         super(ruudukko);
         ruutuJono = new PriorityQueue<>(11, new DijkstraEtaisyyksienVertailija());

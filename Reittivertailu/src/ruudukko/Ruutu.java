@@ -21,6 +21,7 @@ public class Ruutu {
     private double etaisyysAlusta;
     private Ruutu edellinen;
         
+    
     public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
         etaisyysAlusta = Double.POSITIVE_INFINITY;
         kasitelty = false;
@@ -44,34 +45,66 @@ public class Ruutu {
         
     }
     
+    /**
+     * Pysyykö ruudun läpi kulkemaan
+     * @return 
+     */
     public boolean onkoEste() {
         return este;
     }
     
+    /**
+     * Onko algoritmi jo käsitellyt ruudun
+     * @return 
+     */
     public boolean onkoKasitelty() {
         return kasitelty;
     }
     
+    /**
+     * Hakee X koordinaatin ruudukossa
+     * @return X koordinaatti
+     */
     public int getX() {
         return x;
     }
     
+    /**
+     * Hakee y koordinaatin ruudukossa
+     * @return Y koordinaatti
+     */
     public int getY() {
         return y;
     }
     
+    /**
+     * Hakee ruudun läpäisyn kustannuksen
+     * @return Läpi kulkemiseen vaadittava kustannus
+     */
     public int getKustannus() {
         return kustannus;
     }
     
+    /**
+     * Hakee etäisyyden alusta lyhyintä polkua pitkin. Voi muuttua jos ruutu ei ole vielä käsitelty.
+     * @return Etäisyys alusta lyhyintä polkua pitkin
+     */
     public double getEtaisyysAlusta() {
         return (int) etaisyysAlusta;
     }
     
+    /**
+     * Hakee ruudun josta tultiin tähän ruutuun
+     * @return Ruutu josta tultiin tähän ruutuun
+     */
     public Ruutu getEdellinen() {
         return edellinen;
     }
     
+    /**
+     * Hakee ruudun vierusruudut
+     * @return Ruudun vierusruudut
+     */
     public Ruutu[] getNaapurit() {
         return new Ruutu[] {
             ruudukko.getRuutu(x-1, y),
@@ -81,14 +114,25 @@ public class Ruutu {
         };
     }
     
+    /**
+     * Asettaa ruudun käsitellyksi
+     */
     public void setKasitelty() {
         kasitelty = true;
     }
     
+    /**
+     * Asettaa ruudulle etäisyyden alusta
+     * @param etaisyys Etäisyys alusta
+     */
     public void setEtaisyysAlusta(double etaisyys) {
         this.etaisyysAlusta = etaisyys;
     }
     
+    /**
+     * Asettaa ruudun josta tultiin tähän ruutuun
+     * @param edellinen Ruutu josta tultiin tähän ruutuun
+     */
     public void setEdellinen(Ruutu edellinen) {
         this.edellinen = edellinen;
     }

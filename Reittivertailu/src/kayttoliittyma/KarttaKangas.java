@@ -4,15 +4,13 @@
  */
 package kayttoliittyma;
 
-import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Paint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.Timer;
 import javax.swing.JComponent;
+import javax.swing.Timer;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
 
