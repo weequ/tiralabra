@@ -31,20 +31,15 @@ public class BFS extends LyhimmanPolunAlgoritmi{
             Ruutu kasiteltavaRuutu = ruutuJono.poll();
             for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
                 if (naapuri == null) {
-                    //System.out.println("null");
                     continue;
                 }
                 if (naapuri.onkoEste()) {
-                    //System.out.println("este");
                     continue;
                 }
                 if (naapuri.onkoKasitelty()) {
-                    //System.out.println("kasitelty");
                     continue;
                 }
-                //if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+1) {
                 naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+1);
-                //} 
                 naapuri.setKasitelty();
                 ruutuJono.offer(naapuri);
                 //System.out.println("lisays: "+ruutuJono.offer(naapuri));

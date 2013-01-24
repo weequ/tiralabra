@@ -4,13 +4,8 @@
  */
 package ruudukko;
 
-import java.util.ArrayList;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
 /**
- * Ruudukko on reitinhakualgoritmeille tarkoitettu koordinaatisto.
- * Jokaista koordinaattia vastaa yksi ruutu.
+ * Kaksisuuntainen verkko, jossa jokaista solmua vastaa yksi ruutu.
  * @see Ruutu
  * @author Antti
  */
@@ -29,9 +24,6 @@ public class Ruudukko {
      * Ruutu johon reitinhaun on tarkoitus päättyä.
      */
     private Ruutu maali;
-    
-    
-    private ArrayList<ChangeListener> changeListeners;
     
     /**
      * Ruudukon alustus rivinvaihdot sisältävästä merkkijonosta
@@ -76,22 +68,6 @@ public class Ruudukko {
     }
     
     /**
-     * Hakee ruudukon leveyden
-     * @return ruudukon leveys
-     */
-    public int getLeveys() {
-        return ruudukko[0].length;
-    }
-    
-    /**
-     * Hakee ruudukon korkeuden
-     * @return ruudkon korkeus
-     */
-    public int getKorkeus() {
-        return ruudukko.length;
-    }
-    
-    /**
      * Hakee reitinhaun lahtoruudun
      * @return lahtoruutu
      */
@@ -105,6 +81,22 @@ public class Ruudukko {
      */
     public Ruutu getMaali() {
         return maali;
+    }
+    
+    /**
+     * Hakee ruudukon leveyden
+     * @return ruudukon leveys
+     */
+    public int getLeveys() {
+        return ruudukko[0].length;
+    }
+    
+    /**
+     * Hakee ruudukon korkeuden
+     * @return ruudkon korkeus
+     */
+    public int getKorkeus() {
+        return ruudukko.length;
     }
     
     /**
@@ -129,22 +121,5 @@ public class Ruudukko {
         maali = ruudukko[y][x];
     }
     
-    //Loppu on piirtämistä varten. (Kesken)
-    
-    protected void lahetaMuutosTapahtuma(Object source) {
-        ChangeEvent cE = new ChangeEvent(source);
-        for (ChangeListener cL : changeListeners) {
-            cL.stateChanged(cE);
-        }
-    }
-
-    public void addChangeListener(ChangeListener changeListener) {
-        changeListeners.add(changeListener);
-    }
-    
-    
-    public void removeChangeListener(ChangeListener changeListener) {
-        changeListeners.remove(changeListener);
-    }
     
 }

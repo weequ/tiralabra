@@ -105,8 +105,4 @@ public class KarttaKangas extends JComponent{
         
     }
     
-    @Override
-    public void repaint() {
-        paint(this.getGraphics());
-    }
 }

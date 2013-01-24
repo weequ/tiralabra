@@ -53,15 +53,7 @@ public abstract class LyhimmanPolunAlgoritmi {
      * @return false kun algoritmi on suoritettu
      */
     public abstract boolean etene();
-    
-    public void alussa() {
-        
-    }
-    
-    public void lopussa() {
-        
-    }
-    
+
     /**
      * vastaa suorita(0);
      * @see #suorita(int) 

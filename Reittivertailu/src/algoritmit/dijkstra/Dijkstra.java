@@ -33,15 +33,12 @@ public class Dijkstra extends LyhimmanPolunAlgoritmi {
             kasiteltavaRuutu.setKasitelty();
             for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
                 if (naapuri == null) {
-                    //System.out.println("null");
                     continue;
                 }
                 if (naapuri.onkoEste()) {
-                    //System.out.println("este");
                     continue;
                 }
                 if (naapuri.onkoKasitelty()) {
-                    //System.out.println("kasitelty");
                     continue;
                 }
                 if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus()) {

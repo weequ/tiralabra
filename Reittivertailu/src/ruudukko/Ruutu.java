@@ -22,12 +22,12 @@ public class Ruutu {
     private Ruutu edellinen;
         
     public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
-        this.ruudukko = ruudukko;
+        etaisyysAlusta = Double.POSITIVE_INFINITY;
+        kasitelty = false;
         edellinen = null;
+        this.ruudukko = ruudukko;
         this.x = x;
         this.y = y;
-        kasitelty = false;
-        etaisyysAlusta = Double.POSITIVE_INFINITY;
         if (ruutu >= '0' && ruutu <= '9') {
             este = false;
             kustannus = ruutu-'0';
@@ -37,12 +37,8 @@ public class Ruutu {
                 case '#':
                     este = true;
                     break;
-                case '.':
-                    kustannus = 1;
-                    este = false;
-                    break;
                 default:
-                    throw new Exception("Väärä merkki: '"+ruutu+"'. Hyväksytyt merkit: '#' ja '.'");
+                    throw new Exception("Väärä merkki: '"+ruutu+"'. Hyväksytyt merkit: '0'-'9', '-' ja '#'");
             }
        }
         
@@ -52,12 +48,28 @@ public class Ruutu {
         return este;
     }
     
+    public boolean onkoKasitelty() {
+        return kasitelty;
+    }
+    
     public int getX() {
         return x;
     }
     
     public int getY() {
         return y;
+    }
+    
+    public int getKustannus() {
+        return kustannus;
+    }
+    
+    public double getEtaisyysAlusta() {
+        return (int) etaisyysAlusta;
+    }
+    
+    public Ruutu getEdellinen() {
+        return edellinen;
     }
     
     public Ruutu[] getNaapurit() {
@@ -69,28 +81,12 @@ public class Ruutu {
         };
     }
     
-    public void setEtaisyysAlusta(double etaisyys) {
-        this.etaisyysAlusta = etaisyys;
-    }
-    
-    public double getEtaisyysAlusta() {
-        return (int) etaisyysAlusta;
-    }
-    
     public void setKasitelty() {
         kasitelty = true;
     }
     
-    public boolean onkoKasitelty() {
-        return kasitelty;
-    }
-    
-    public int getKustannus() {
-        return kustannus;
-    }
-    
-    public Ruutu getEdellinen() {
-        return edellinen;
+    public void setEtaisyysAlusta(double etaisyys) {
+        this.etaisyysAlusta = etaisyys;
     }
     
     public void setEdellinen(Ruutu edellinen) {
