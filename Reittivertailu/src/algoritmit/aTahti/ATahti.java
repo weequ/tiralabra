@@ -16,6 +16,8 @@ import ruudukko.Ruutu;
  */
 public class ATahti extends LyhimmanPolunAlgoritmi {
     
+    private PriorityQueue<Ruutu> ruutuJono;
+    
     public ATahti(Ruudukko ruudukko) {
         super(ruudukko);
         ruutuJono = new PriorityQueue<>(11, new ATahtiEtaisyyksienVertailija(ruudukko.getMaali()));
@@ -33,6 +35,7 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
         for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
             if (naapuri == null) {
                 continue;
+<<<<<<< HEAD
             }
             if (naapuri.onkoEste()) {
                 continue;
@@ -44,6 +47,20 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
                 naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus());
                 naapuri.setEdellinen(kasiteltavaRuutu);
             }
+=======
+            }
+            if (naapuri.onkoEste()) {
+                continue;
+            }
+            if (naapuri.onkoKasitelty()) {
+                continue;
+            }
+            if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus()) {
+                naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus());
+                naapuri.setEdellinen(kasiteltavaRuutu);
+            }
+            if (naapuri.equals(ruudukko.getMaali())) return false;
+>>>>>>> 25da419c12f884cb523573f2492f73138658f31d
             if (!ruutuJono.contains(naapuri)) ruutuJono.offer(naapuri);
         }
         return true;

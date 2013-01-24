@@ -6,6 +6,7 @@ package algoritmit.bFS;
 
 import algoritmit.LyhimmanPolunAlgoritmi;
 import java.util.ArrayDeque;
+import java.util.Queue;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
 
@@ -14,6 +15,8 @@ import ruudukko.Ruutu;
  * @author Antti
  */
 public class BFS extends LyhimmanPolunAlgoritmi{
+    
+    private Queue<Ruutu> ruutuJono;
     
     public BFS(Ruudukko ruudukko) {
         super(ruudukko);
