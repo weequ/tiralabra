@@ -22,7 +22,7 @@ public class KarttaKangas extends JComponent{
     /**
      * Ruudun koko (korkeus ja leveys) pikseleinä
      */
-    private static final int RUUDUNKOKO = 30;
+    private static final int RUUDUNKOKO = 10;
     
     /**
      * Kankaalle piirrettävä ruudukko
