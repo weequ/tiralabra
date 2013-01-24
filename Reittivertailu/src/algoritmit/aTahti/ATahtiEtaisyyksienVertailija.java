@@ -27,7 +27,7 @@ public class ATahtiEtaisyyksienVertailija implements Comparator<Ruutu> {
     private double etaisyysLoppuun(Ruutu r) {
         int xEtaisyys = Math.abs(r.getX()-maali.getX());
         int yEtaisyys = Math.abs(r.getY()-maali.getY());
-        return xEtaisyys+yEtaisyys;
+        return xEtaisyys+yEtaisyys;//Math.sqrt(yEtaisyys*xEtaisyys+yEtaisyys*yEtaisyys);
     }
 
     

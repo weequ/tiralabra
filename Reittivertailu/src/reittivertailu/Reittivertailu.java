@@ -36,12 +36,12 @@ public class Reittivertailu {
             Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
         }
-        ruudukko.setLahto(2, 2);
+        ruudukko.setLahto(0, 0);
         ruudukko.setMaali(ruudukko.getLeveys()-1, ruudukko.getKorkeus()-1);
         GUI gui = new GUI(ruudukko);
         gui.pack();
         LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
-        dijkstra.suorita(1000);
+        dijkstra.suorita(10);
         System.out.println("valmis!");
     }
     public static void main(String[] args) {
