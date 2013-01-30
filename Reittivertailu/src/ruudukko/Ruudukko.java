@@ -53,6 +53,7 @@ public class Ruudukko {
             }
         }
     }
+    
     /**
      * Hakee ruudun kohdasta (x, y)
      * @param x ruudun y koordinaatti

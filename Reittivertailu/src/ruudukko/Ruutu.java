@@ -14,17 +14,21 @@ public class Ruutu {
 
     private Ruudukko ruudukko;
     private boolean este;
-    private boolean kasitelty;
+    private Vaihe vaihe;
     private int kustannus;
     private int x;
     private int y;
     private double etaisyysAlusta;
     private Ruutu edellinen;
+    
+    public enum Vaihe {
+        KASITELTY, KASITTELYSSA, KASITTELEMATON 
+    }
         
     
     public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
+        vaihe = Vaihe.KASITTELEMATON;
         etaisyysAlusta = Double.POSITIVE_INFINITY;
-        kasitelty = false;
         edellinen = null;
         this.ruudukko = ruudukko;
         this.x = x;
@@ -57,8 +61,8 @@ public class Ruutu {
      * Onko algoritmi jo käsitellyt ruudun
      * @return 
      */
-    public boolean onkoKasitelty() {
-        return kasitelty;
+    public Vaihe getVaihe() {
+        return vaihe;
     }
     
     /**
@@ -110,15 +114,20 @@ public class Ruutu {
             ruudukko.getRuutu(x-1, y),
             ruudukko.getRuutu(x+1, y),
             ruudukko.getRuutu(x, y-1),
-            ruudukko.getRuutu(x, y+1)
+            ruudukko.getRuutu(x, y+1)/*,
+            ruudukko.getRuutu(x-1, y-1),
+            ruudukko.getRuutu(x+1, y+1),
+            ruudukko.getRuutu(x-1, y+1),
+            ruudukko.getRuutu(x+1, y-1)'*/
         };
     }
     
     /**
-     * Asettaa ruudun käsitellyksi
+     * Asettaa ruudulle vaiheen
+     * @param vaihe KASITTELEMATON, KASITTELYSSA tai KASITELTY
      */
-    public void setKasitelty() {
-        kasitelty = true;
+    public void setVaihe(Vaihe vaihe) {
+        this.vaihe = vaihe;
     }
     
     /**

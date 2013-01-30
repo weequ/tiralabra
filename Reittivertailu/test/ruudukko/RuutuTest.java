@@ -67,13 +67,13 @@ public class RuutuTest {
         assertEquals(eiEste.onkoEste(), false);
     }
 
-    @Test
-    public void testOnkoSetKasitelty() {
-        Ruutu ruutu = ruudukko.getRuutu(0, 0);
-        assertEquals(ruutu.onkoKasitelty(), false);
-        ruutu.setKasitelty();
-        assertEquals(ruutu.onkoKasitelty(), true);
-    }
+//    @Test
+//    public void testOnkoSetKasitelty() {
+//        Ruutu ruutu = ruudukko.getRuutu(0, 0);
+//        assertEquals(ruutu.onkoKasitelty(), false);
+//        ruutu.setKasitelty();
+//        assertEquals(ruutu.onkoKasitelty(), true);
+//    }
 
     @Test
     public void testGetX() {

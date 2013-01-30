@@ -76,8 +76,10 @@ public class KarttaKangas extends JComponent{
                 Ruutu kasiteltavaRuutu = ruudukko.getRuutu(x, y);
                 if (kasiteltavaRuutu.onkoEste()) {
                     g.setColor(Color.BLACK);
-                } else if (kasiteltavaRuutu.onkoKasitelty()) {
+                } else if (kasiteltavaRuutu.getVaihe() == Ruutu.Vaihe.KASITELTY) {
                     g.setColor(Color.BLUE);
+                } else if (kasiteltavaRuutu.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) {
+                    g.setColor(Color.MAGENTA);
                 } else {
                     int rgb = 255-kasiteltavaRuutu.getKustannus()*20;
                     Color c = new Color(rgb, rgb, rgb);

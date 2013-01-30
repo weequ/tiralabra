@@ -21,8 +21,9 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
     public ATahti(Ruudukko ruudukko) {
         super(ruudukko);
         ruutuJono = new PriorityQueue<>(11, new ATahtiEtaisyyksienVertailija(ruudukko.getMaali()));
-        ruutuJono.add(ruudukko.getLahto());
-        ruudukko.getLahto().setKasitelty();
+        ruutuJono.offer(ruudukko.getLahto());
+        ruudukko.getLahto().setVaihe(Ruutu.Vaihe.KASITTELYSSA);
+        //ruudukko.getLahto().setVaihe(Ruutu.Vaihe.KASITELTY);
     }
     
     @Override
@@ -31,24 +32,30 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
         System.out.println(koko);
         if (koko == 0) return false;//Algoritmi ei päässyt loppuun
         Ruutu kasiteltavaRuutu = ruutuJono.poll();
-        kasiteltavaRuutu.setKasitelty();
+        kasiteltavaRuutu.setVaihe(Ruutu.Vaihe.KASITELTY);
         for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
             if (naapuri == null) {
                 continue;
-
             }
             if (naapuri.onkoEste()) {
                 continue;
             }
-            if (naapuri.onkoKasitelty()) {
+            if (naapuri.getVaihe() == Ruutu.Vaihe.KASITELTY) {
                 continue;
             }
             if (naapuri.getEtaisyysAlusta() > kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus()) {
                 naapuri.setEtaisyysAlusta(kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus());
                 naapuri.setEdellinen(kasiteltavaRuutu);
+                if (naapuri.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) { //Koska javan priorityqueue ei tue päivitystä!
+                    ruutuJono.remove(naapuri);//O(n)
+                    ruutuJono.offer(naapuri);//Binäärikeko: O(log(n) Fibonacci keko: O(1)
+                }
             }
             if (naapuri.equals(ruudukko.getMaali())) return false;
-            if (!ruutuJono.contains(naapuri)) ruutuJono.offer(naapuri);
+            if (naapuri.getVaihe() != Ruutu.Vaihe.KASITTELYSSA) {//(!ruutuJono.contains(naapuri)) {
+                ruutuJono.offer(naapuri);
+                naapuri.setVaihe(Ruutu.Vaihe.KASITTELYSSA);
+            }
         }
         return true;
     }
