@@ -1,15 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tietorakenteet;
 
-import java.nio.channels.FileChannel;
 import java.util.Map;
-import java.util.Map.Entry;
 
 /**
- *
+ * Fibonacci keon alkio.
  * @author Antti
  */
 public class FibonacciSolmu<Comparable, Object> implements Map.Entry<Comparable, Object> {
@@ -28,17 +22,29 @@ public class FibonacciSolmu<Comparable, Object> implements Map.Entry<Comparable,
         vasen = oikea = this;
     }
     
-
+    /**
+     * palauttaa avaimen
+     * @return avain
+     */
     @Override
     public Comparable getKey() {
         return key;
     }
 
+    /**
+     * palauttaa arvon
+     * @return arvo
+     */
     @Override
     public Object getValue() {
         return alkio;
     }
 
+    /**
+     * asettaa arvon
+     * @param value arvo
+     * @return vanha arvo
+     */
     @Override
     public Object setValue(Object value) {
         Object vanha = getValue();

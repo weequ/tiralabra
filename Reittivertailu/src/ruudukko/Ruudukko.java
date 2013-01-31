@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package ruudukko;
 
 /**
@@ -41,9 +37,12 @@ public class Ruudukko {
      */
     
     public Ruudukko(String[] rivit) throws Exception {
-        System.out.println(rivit.length+ " riviä.");
         ruudukko = new Ruutu[rivit.length][rivit[0].length()];
-        
+        tulkkaaRivit(rivit);
+    }
+    
+    
+    private void tulkkaaRivit(String[] rivit) throws Exception {
         for (int y = 0; y < rivit.length; y++) {
             if (rivit[y].length() != rivit[0].length()) {
                 throw new Exception("Ruudukko sai syötteeksi eripituisia rivejä");

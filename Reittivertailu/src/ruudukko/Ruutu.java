@@ -21,18 +21,37 @@ public class Ruutu {
     private double etaisyysAlusta;
     private Ruutu edellinen;
     
+    /**
+     * Kuvaa ruudun tilaa algoritmissa.
+     * Määrittelee kolme vaihetta: KASITELTY, KASITTELYSSA ja KASITTELEMATON
+     */
     public enum Vaihe {
         KASITELTY, KASITTELYSSA, KASITTELEMATON 
     }
         
-    
+    /**
+     * Luo uuden ruudun.
+     * @param ruudukko Ruudukko johon tämä ruutu kuuluu.
+     * @param ruutu Kustannus kulkea ruudussa. '#' = Este(äärretön), '-' = -1, '0'..'9'-> 0..9
+     * @param x Ruudun x koordinaatti.
+     * @param y Ruudun y koordinaatti.
+     * @throws Exception Jos parametri ruutu ei kuulu joukkoon {'#', '-', '0', .. ,'9'}
+     */
     public Ruutu(Ruudukko ruudukko, char ruutu, int x, int y) throws Exception {
-        vaihe = Vaihe.KASITTELEMATON;
-        etaisyysAlusta = Double.POSITIVE_INFINITY;
-        edellinen = null;
+        alustaMuuttujat();
         this.ruudukko = ruudukko;
         this.x = x;
         this.y = y;
+        tulkitseMerkki(ruutu);
+    }
+    
+    private void alustaMuuttujat() {
+        vaihe = Vaihe.KASITTELEMATON;
+        etaisyysAlusta = Double.POSITIVE_INFINITY;
+        edellinen = null;
+    }
+    
+    private void tulkitseMerkki(char ruutu) throws Exception {
         if (ruutu >= '0' && ruutu <= '9') {
             este = false;
             kustannus = ruutu-'0';
@@ -46,7 +65,6 @@ public class Ruutu {
                     throw new Exception("Väärä merkki: '"+ruutu+"'. Hyväksytyt merkit: '0'-'9', '-' ja '#'");
             }
        }
-        
     }
     
     /**
@@ -112,8 +130,8 @@ public class Ruutu {
     public Ruutu[] getNaapurit() {
         return new Ruutu[] {
             ruudukko.getRuutu(x-1, y),
-            ruudukko.getRuutu(x+1, y),
             ruudukko.getRuutu(x, y-1),
+            ruudukko.getRuutu(x+1, y),
             ruudukko.getRuutu(x, y+1)/*,
             ruudukko.getRuutu(x-1, y-1),
             ruudukko.getRuutu(x+1, y+1),

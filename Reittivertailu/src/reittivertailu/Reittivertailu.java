@@ -15,14 +15,15 @@ import ruudukko.Ruudukko;
 import tiedostonLuku.Lukija;
 
 /**
- * KESKENERÄINEN
+ * Luokka josta kaikki lähtee liikkeelle. 
  * @author Antti
  */
 public class Reittivertailu {
 
     private Ruudukko ruudukko;
     
-    public Reittivertailu() {
+    
+    private Reittivertailu() {
         Lukija lukija = null;
         try {
             lukija = new Lukija("testikartta.txt");
@@ -36,14 +37,14 @@ public class Reittivertailu {
             Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
         }
-        ruudukko.setLahto(5, 5);
+        ruudukko.setLahto(7, 7);
         ruudukko.setMaali(ruudukko.getLeveys()-1, ruudukko.getKorkeus()-1);
         GUI gui = new GUI(ruudukko);
         gui.pack();
-        LyhimmanPolunAlgoritmi dijkstra = new Dijkstra(ruudukko);
-        dijkstra.suorita(200);
-        System.out.println("valmis!");
+        LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
+        dijkstra.suorita(50);
     }
+    
     public static void main(String[] args) {
         new Reittivertailu();
     }

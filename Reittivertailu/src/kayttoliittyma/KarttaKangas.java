@@ -63,46 +63,65 @@ public class KarttaKangas extends JComponent{
     }
     
     
+    private void piirraRuudunTila(Graphics g, Ruutu ruutu) {
+        if (ruutu.onkoEste()) {
+            g.setColor(Color.BLACK);
+        } else if (ruutu.getVaihe() == Ruutu.Vaihe.KASITELTY) {
+            g.setColor(Color.BLUE);
+        } else if (ruutu.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) {
+            g.setColor(Color.MAGENTA);
+        } else {
+            int rgb = 255-ruutu.getKustannus()*20;
+            Color c = new Color(rgb, rgb, rgb);
+            g.setColor(c);
+        }
+        g.fillRect(ruutu.getX()*RUUDUNKOKO, ruutu.getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
+    }
+    
+    private void piirraLahtoJaMaali(Graphics g) {
+        g.setColor(Color.GREEN);
+        g.fillRect(ruudukko.getLahto().getX()*RUUDUNKOKO, ruudukko.getLahto().getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
+        g.setColor(Color.RED);
+        g.fillRect(ruudukko.getMaali().getX()*RUUDUNKOKO, ruudukko.getMaali().getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
+    }
+    
+    private void piirraYhteysEdelliseen(Graphics g, Ruutu ruutu) {
+        if (ruutu == null) return;
+        Ruutu edellinen = ruutu.getEdellinen();
+        if (edellinen == null) return;
+        g.setColor(Color.PINK);
+        g.fillOval(ruutu.getX()*RUUDUNKOKO+RUUDUNKOKO/2-2, ruutu.getY()*RUUDUNKOKO+RUUDUNKOKO/2-2, 4, 4);
+        g.drawLine(edellinen.getX()*RUUDUNKOKO+RUUDUNKOKO/2, edellinen.getY()*RUUDUNKOKO+RUUDUNKOKO/2, ruutu.getX()*RUUDUNKOKO+RUUDUNKOKO/2, ruutu.getY()*RUUDUNKOKO+RUUDUNKOKO/2);
+    }
+    
+    
+    private void piirraRuutujenTilat(Graphics g) {
+        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
+            for (int x = 0; x < ruudukko.getLeveys(); x++) {
+                piirraRuudunTila(g, ruudukko.getRuutu(x, y));
+            }
+        }
+    }
+    
+    private void piirraYhteydetEdellisiin(Graphics g) {
+        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
+            for (int x = 0; x < ruudukko.getLeveys(); x++) {
+                piirraYhteysEdelliseen(g, ruudukko.getRuutu(x, y));
+            }
+        }
+    }
+    
     /**
      * Piirtää ruudukon
      * @param g Piirtämiseen käytetty Graphics olio.
      */
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        //super.paint(g);
         if (ruudukko == null) return;
-        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
-            for (int x = 0; x < ruudukko.getLeveys(); x++) {
-                Ruutu kasiteltavaRuutu = ruudukko.getRuutu(x, y);
-                if (kasiteltavaRuutu.onkoEste()) {
-                    g.setColor(Color.BLACK);
-                } else if (kasiteltavaRuutu.getVaihe() == Ruutu.Vaihe.KASITELTY) {
-                    g.setColor(Color.BLUE);
-                } else if (kasiteltavaRuutu.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) {
-                    g.setColor(Color.MAGENTA);
-                } else {
-                    int rgb = 255-kasiteltavaRuutu.getKustannus()*20;
-                    Color c = new Color(rgb, rgb, rgb);
-                    g.setColor(c);
-                }
-                g.fillRect(x*RUUDUNKOKO, y*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
-            }
-        }
-        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
-            for (int x = 0; x < ruudukko.getLeveys(); x++) {
-                Ruutu edellinen = ruudukko.getRuutu(x, y).getEdellinen();
-                if (edellinen != null) {
-                    g.setColor(Color.PINK);
-                    g.fillOval(x*RUUDUNKOKO+RUUDUNKOKO/2-2, y*RUUDUNKOKO+RUUDUNKOKO/2-2, 4, 4);
-                    g.drawLine(x*RUUDUNKOKO+RUUDUNKOKO/2, y*RUUDUNKOKO+RUUDUNKOKO/2, edellinen.getX()*RUUDUNKOKO+RUUDUNKOKO/2, edellinen.getY()*RUUDUNKOKO+RUUDUNKOKO/2);
-                }
-            }
-        }
-        g.setColor(Color.GREEN);
-        g.fillRect(ruudukko.getLahto().getX()*RUUDUNKOKO, ruudukko.getLahto().getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
-        g.setColor(Color.RED);
-        g.fillRect(ruudukko.getMaali().getX()*RUUDUNKOKO, ruudukko.getMaali().getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
-        
+        piirraRuutujenTilat(g);
+        piirraYhteydetEdellisiin(g);
+        piirraLahtoJaMaali(g);
     }
     
 }
