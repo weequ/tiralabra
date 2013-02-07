@@ -9,7 +9,7 @@ public class Ruudukko {
     /**
      * Ruudukon sisältämät ruudut
      */
-    private Ruutu[][] ruudukko;//ruudukko[y][x]
+    protected Ruutu[][] ruudukko;//ruudukko[y][x]
     
     /**
      * Ruutu josta reitin haku aloitetaan.
@@ -42,7 +42,7 @@ public class Ruudukko {
     }
     
     
-    private void tulkkaaRivit(String[] rivit) throws Exception {
+    protected void tulkkaaRivit(String[] rivit) throws Exception {
         for (int y = 0; y < rivit.length; y++) {
             if (rivit[y].length() != rivit[0].length()) {
                 throw new Exception("Ruudukko sai syötteeksi eripituisia rivejä");

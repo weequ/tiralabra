@@ -66,20 +66,25 @@ public abstract class LyhimmanPolunAlgoritmi {
             if (naapuri == null || naapuri.getVaihe() == Ruutu.Vaihe.KASITELTY || naapuri.onkoEste()){
                 continue;
             }
-            double etaisyysTahanNaapuriin = kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus();
-            if (naapuri.getEtaisyysAlusta() >= etaisyysTahanNaapuriin) {
-                naapuri.setEtaisyysAlusta(etaisyysTahanNaapuriin);
-                naapuri.setEdellinen(kasiteltavaRuutu);
-                if (naapuri.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) { //Koska javan priorityqueue ei tue päivitystä!
-                    ruutuJono.remove(naapuri);//O(n)
-                    ruutuJono.offer(naapuri);//Binäärikeko: O(log(n) Fibonacci keko: O(1)
-                } else {
-                    ruutuJono.offer(naapuri);
-                    naapuri.setVaihe(Ruutu.Vaihe.KASITTELYSSA);
-                }
-            }
+            loysaa(naapuri, kasiteltavaRuutu);
         }
         return true;
+    }
+    
+    
+    public void loysaa(Ruutu naapuri, Ruutu kasiteltavaRuutu) {
+        double etaisyysTahanNaapuriin = kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus();
+        if (naapuri.getEtaisyysAlusta() > etaisyysTahanNaapuriin) {
+            naapuri.setEtaisyysAlusta(etaisyysTahanNaapuriin);
+            naapuri.setEdellinen(kasiteltavaRuutu);
+            if (naapuri.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) { //Koska javan priorityqueue ei tue päivitystä!
+                ruutuJono.remove(naapuri);//O(n)
+                ruutuJono.offer(naapuri);//Binäärikeko: O(log(n) Fibonacci keko: O(1)
+            } else {
+                ruutuJono.offer(naapuri);
+                naapuri.setVaihe(Ruutu.Vaihe.KASITTELYSSA);
+            }
+        }
     }
     
     

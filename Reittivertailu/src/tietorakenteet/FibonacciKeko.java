@@ -1,6 +1,9 @@
 package tietorakenteet;
 
+import ruudukko.FibonacciRuutu;
+
 /**
+ * EI TOIMI (KESKENERÄINEN)
  * Fibonacci keon toteuttava luokka. 
  * Fibonacci keolla insert ja decrease key saadaan toteutettua vakioajassa toisin kuin esimerkiksi binäärikeolla.
  * Decrease key joutuu kuitenkin välillä tekemään O(log(n)) operaation, mutta niin harvoin ettei se muuta kertaluokkaa.
@@ -8,7 +11,7 @@ package tietorakenteet;
  */
 public class FibonacciKeko {
     
-    private FibonacciSolmu pienin;
+    private FibonacciRuutu pienin;
     private int koko;
     
     
@@ -24,7 +27,7 @@ public class FibonacciKeko {
      * Palauttaa keon pienimmän alkion poistamatta sitä.
      * @return Keon pienin alkio.
      */
-    public FibonacciSolmu findMin() {
+    public FibonacciRuutu findMin() {
         return pienin;
     }
     
@@ -32,8 +35,8 @@ public class FibonacciKeko {
      * Poistaa keon pienimmän alkion ja palauttaa sen sitten.
      * @return Keon pienin alkio.
      */
-    public FibonacciSolmu deleteMin() {
-        FibonacciSolmu tulos = pienin;
+    public FibonacciRuutu deleteMin() {
+        FibonacciRuutu tulos = pienin;
         if (tulos == null) return tulos;
         yhdistaVierusListat(tulos.lapsi, tulos);//kaikki lapset pitaa lisata
         throw new UnsupportedOperationException("Not supported yet");
@@ -43,12 +46,12 @@ public class FibonacciKeko {
      * Lisää solmun kekoon.
      * @param solmu Solmu joka lisätään kekoon.
      */
-    public void insert(FibonacciSolmu<Comparable, Object> solmu) {
+    public void lisaa(FibonacciRuutu solmu) {
         if (pienin == null) {
             pienin = solmu;
         } else {
             yhdistaVierusListat(solmu, pienin);
-            if (solmu.getKey().compareTo(pienin) < 0) {
+            if (solmu.compareTo(pienin) < 0) {
                 pienin = solmu;
             }
         }
@@ -60,8 +63,8 @@ public class FibonacciKeko {
      * @param o Alkio jonka avainta pienennetään
      * @param key Avaimen uusi arvo. Oltava vanhaa arvoa pienempi.
      */
-    public void decreaseKey(FibonacciSolmu<Comparable, Object> o, Comparable key) {
-        if (o.getKey().compareTo(key) < 0) throw new IllegalArgumentException("Uusi avain on vanhaa isompi.");
+    public void decreaseKey(FibonacciRuutu o, Comparable key) {
+        //if (o.getKey().compareTo(key) < 0) throw new IllegalArgumentException("Uusi avain on vanhaa isompi.");
         //jatkuu
     }
     
@@ -70,7 +73,7 @@ public class FibonacciKeko {
      * @param lapsi Solmu josta tulee lapsi
      * @param vanhempi Solmu josta tulee vanhempi
      */
-    private void yhdista(FibonacciSolmu lapsi, FibonacciSolmu vanhempi) {
+    private void yhdista(FibonacciRuutu lapsi, FibonacciRuutu vanhempi) {
         lapsi.oikea.vasen = lapsi.vasen.oikea;
         lapsi.vasen.oikea = lapsi.oikea.vasen;
         lapsi.vanhempi = vanhempi;
@@ -79,14 +82,14 @@ public class FibonacciKeko {
         } else {
             yhdistaVierusListat(lapsi, vanhempi);
         }
-        vanhempi.lapsiSolmujenLukumaara++;
+        vanhempi.lapsiSolmujenMaara++;
         lapsi.merkitty = false;
     }
     
     
-    private void yhdistaVierusListat(FibonacciSolmu a, FibonacciSolmu b) {
+    private void yhdistaVierusListat(FibonacciRuutu a, FibonacciRuutu b) {
         if (a == null || b == null) return;
-        FibonacciSolmu apusolmu = a.oikea;
+        FibonacciRuutu apusolmu = a.oikea;
         a.oikea = b.oikea;
         a.oikea.vasen = a;
         b.oikea = apusolmu;

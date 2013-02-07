@@ -10,7 +10,7 @@ package ruudukko;
  * @author Antti
  * @see Ruudukko
  */
-public class Ruutu {
+public class Ruutu implements Comparable<Ruutu> {
 
     private Ruudukko ruudukko;
     private boolean este;
@@ -20,6 +20,16 @@ public class Ruutu {
     private int y;
     private double etaisyysAlusta;
     private Ruutu edellinen;
+
+    /**
+     * Toistaiseksi vain dijkstra:n compareTo.
+     * @param o
+     * @return 
+     */
+    @Override
+    public int compareTo(Ruutu o) {
+        return (int)(etaisyysAlusta-o.etaisyysAlusta);
+    }
     
     /**
      * Kuvaa ruudun tilaa algoritmissa.

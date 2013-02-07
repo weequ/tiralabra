@@ -3,7 +3,6 @@ package algoritmit.dijkstra;
 import algoritmit.LyhimmanPolunAlgoritmi;
 import java.util.PriorityQueue;
 import ruudukko.Ruudukko;
-import ruudukko.Ruutu;
 
 /**
  * Dijkstra algoritmin toteuttava LyhimmänPolunAlgoritmi.
