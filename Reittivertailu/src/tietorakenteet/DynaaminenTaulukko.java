@@ -22,10 +22,12 @@ public class DynaaminenTaulukko<E> {
      * @param alkio
      */
     public void lisaa(E alkio) {
-        if (alkiot.length == koko) {
+        //System.out.println("Lisaa (DynaaminenTaulukko)");
+        if (koko == alkiot.length) {
             kaksinKertaistaKoko();
         }
         alkiot[koko] = alkio;
+        koko++;
     }
     
     /**
@@ -48,12 +50,24 @@ public class DynaaminenTaulukko<E> {
         return alkiot[sijainti];
     }
     
+    public E poistaAlkio(int sijainti) {
+        E tulos = alkiot[sijainti];
+        for (int i = sijainti; i < koko-1; i++) {
+            alkiot[i] = alkiot[i+1];
+        }
+        koko--;
+        return tulos;
+    }
+    
     /**
      * Korvaa sijainnissa olevan alkion parametrina annetulla alkiolla.
      * @param sijainti Indeksi josta alkio korvataan
      * @param alkio Alkio joka asetetaan sijaintiin.
      */
     public void setAlkio(int sijainti, E alkio) {
+//        if (sijainti == koko) {
+//            lisaa(alkio);
+//        } else
         alkiot[sijainti] = alkio;
     }
     

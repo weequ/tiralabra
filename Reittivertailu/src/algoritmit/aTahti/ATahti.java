@@ -4,6 +4,8 @@ import algoritmit.LyhimmanPolunAlgoritmi;
 import java.util.PriorityQueue;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
+import tietorakenteet.BinaariPrioriteettiJono;
+import tietorakenteet.PaivittyvaPriorityQueue;
 
 /**
  * Dijkstra algoritmin toteuttava LyhimmänPolunAlgoritmi.
@@ -17,7 +19,7 @@ public class ATahti extends LyhimmanPolunAlgoritmi {
      * @param ruudukko Algoritmin käyttämä ruudukko
      */
     public ATahti(Ruudukko ruudukko) {
-        super(ruudukko, new PriorityQueue<>(11, new ATahtiEtaisyyksienVertailija(ruudukko.getMaali())));
+        super(ruudukko, new BinaariPrioriteettiJono<>(11, new ATahtiEtaisyyksienVertailija(ruudukko.getMaali())));
     }
     
 }

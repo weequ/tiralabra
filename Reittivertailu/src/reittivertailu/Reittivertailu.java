@@ -42,6 +42,7 @@ public class Reittivertailu {
         GUI gui = new GUI(ruudukko);
         gui.pack();
         LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
+        //LyhimmanPolunAlgoritmi dijkstra = new Dijkstra(ruudukko);
         dijkstra.suorita(50);
     }
     

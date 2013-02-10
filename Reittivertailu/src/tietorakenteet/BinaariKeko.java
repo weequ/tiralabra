@@ -1,23 +1,29 @@
 package tietorakenteet;
 
-import ruudukko.BinaariRuutu;
+import java.util.Comparator;
+import ruudukko.BinaariSolmu;
 
 
 /**
  * Minimikeon toteuttava binäärikeko.
  * @author Antti
  */
-public class BinaariKeko {
-    private DynaaminenTaulukko<BinaariRuutu> keko;
+public class BinaariKeko<T extends BinaariSolmu> {
+    private DynaaminenTaulukko<T> keko;
     private int koko;
-    
+    private Comparator<? super T> vertailija;
     /**
      * Luo uuden binäärikeon.
      * @param aloitusKapasiteetti Kuinka isolla taulukolla aloitetaan.
      */
-    public BinaariKeko(int aloitusKapasiteetti) {
+    public BinaariKeko(int aloitusKapasiteetti, Comparator<? super T> vertailija) {
+        this.vertailija = vertailija;
         keko = new DynaaminenTaulukko<>(aloitusKapasiteetti);
         koko = 0;
+    }
+    
+    public int getKoko() {
+        return koko;
     }
     
     
@@ -25,9 +31,11 @@ public class BinaariKeko {
      * Lisää alkion kekoon.
      * @param alkio Alkio joka lisätään kekoon
      */
-    public void lisaa(BinaariRuutu alkio) {
-        asetaAlkio(koko, alkio);
-        paivitaAvain(koko);
+    public void lisaa(T alkio) {
+        System.out.println("lisaa (binaarikeko) "+koko+", "+keko.getKoko());
+        keko.lisaa(alkio);
+        alkio.setSijaintiKeossa(koko);
+        korjaaYlos(koko);
         koko++;
     }
     
@@ -35,7 +43,7 @@ public class BinaariKeko {
      * Palauttaa keon pienimmän alkion poistamatta sitä.
      * @return Pienin alkio
      */
-    public BinaariRuutu getPienin() {
+    public T getPienin() {
         return keko.getAlkio(0);
     }
     
@@ -43,12 +51,12 @@ public class BinaariKeko {
      * Poistaa ja palauttaa pienimmän alkion.
      * @return Poistettu alkio.
      */
-    public BinaariRuutu poistaPienin() {
-        BinaariRuutu pienin = keko.getAlkio(0);
-        asetaAlkio(0, keko.getAlkio(koko-1));
+    public T poistaPienin() {
+        T pienin = keko.getAlkio(0);
+        asetaAlkio(0, keko.poistaAlkio(koko-1));
         koko--;
         korjaaAlas(0);
-        pienin.sijainti = -1;
+        pienin.setSijaintiKeossa(-1);
         return pienin;
     }
     
@@ -76,7 +84,7 @@ public class BinaariKeko {
     }
     
     private void vaihda(int alkio1, int alkio2) {
-        BinaariRuutu apumuuttuja = keko.getAlkio(alkio1);
+        T apumuuttuja = keko.getAlkio(alkio1);
         asetaAlkio(alkio1, keko.getAlkio(alkio2));
         asetaAlkio(alkio2, apumuuttuja);
     }
@@ -84,23 +92,23 @@ public class BinaariKeko {
     private void korjaaAlas(int sijainti) {
         int pienin;
         if (oikeaLapsi(sijainti) <= koko) {
-            if (keko.getAlkio(vasenLapsi(sijainti)).compareTo(keko.getAlkio(oikeaLapsi(sijainti))) < 0) {
+            if (vertailija.compare(keko.getAlkio(vasenLapsi(sijainti)), keko.getAlkio(oikeaLapsi(sijainti))) < 0) {
                 pienin = vasenLapsi(sijainti);
             } else {
                 pienin = oikeaLapsi(sijainti);
             }
-            if (keko.getAlkio(sijainti).compareTo(keko.getAlkio(pienin)) < 0) {
+            if (vertailija.compare(keko.getAlkio(sijainti), keko.getAlkio(pienin)) > 0) {
                 vaihda(sijainti, pienin);
                 korjaaAlas(pienin);
             }
-        } else if (vasenLapsi(sijainti) == koko && keko.getAlkio(sijainti).compareTo(keko.getAlkio(vasenLapsi(sijainti))) < 0) {
+        } else if (vasenLapsi(sijainti) == koko && vertailija.compare(keko.getAlkio(sijainti),keko.getAlkio(vasenLapsi(sijainti))) < 0) {
             vaihda(sijainti, vasenLapsi(sijainti));
         }
     }
     
     
     private void korjaaYlos(int sijainti) {
-        while(sijainti > 0 && keko.getAlkio(vanhempi(sijainti)).compareTo(keko.getAlkio(sijainti)) > 0) {
+        while(sijainti > 0 && vertailija.compare(keko.getAlkio(vanhempi(sijainti)), keko.getAlkio(sijainti)) > 0) {
             //asetaAlkio(sijainti, keko[vanhempi(sijainti)]);
             vaihda(sijainti, vanhempi(sijainti));
             sijainti = vanhempi(sijainti);
@@ -112,10 +120,10 @@ public class BinaariKeko {
      * @param sijainti sijainti johon alkio asetetaan.
      * @param alkio alkio joka asetetaan sijaintiin.
      */
-    private void asetaAlkio(int sijainti, BinaariRuutu alkio) {
+    private void asetaAlkio(int sijainti, T alkio) {
         keko.setAlkio(sijainti, alkio);
         //keko[sijainti] = alkio;
-        keko.getAlkio(sijainti).sijainti = sijainti;
+        keko.getAlkio(sijainti).setSijaintiKeossa(sijainti);
     }
     
     

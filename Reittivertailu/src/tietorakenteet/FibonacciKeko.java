@@ -1,6 +1,7 @@
 package tietorakenteet;
 
-import ruudukko.FibonacciRuutu;
+import java.util.Comparator;
+import ruudukko.FibonacciSolmu;
 
 /**
  * EI TOIMI (KESKENERÄINEN)
@@ -9,16 +10,18 @@ import ruudukko.FibonacciRuutu;
  * Decrease key joutuu kuitenkin välillä tekemään O(log(n)) operaation, mutta niin harvoin ettei se muuta kertaluokkaa.
  * @author Antti
  */
-public class FibonacciKeko {
+public class FibonacciKeko<T extends FibonacciSolmu> {
     
-    private FibonacciRuutu pienin;
+    private T pienin;
     private int koko;
+    private Comparator<? super T> vertailija;
     
     
     /**
      * Luo uuden fibonacci keon.
      */
-    public FibonacciKeko() {
+    public FibonacciKeko(Comparator<? super T> vertailija) {
+        this.vertailija = vertailija;
         pienin = null;
         koko = 0;
     }
@@ -27,7 +30,7 @@ public class FibonacciKeko {
      * Palauttaa keon pienimmän alkion poistamatta sitä.
      * @return Keon pienin alkio.
      */
-    public FibonacciRuutu findMin() {
+    public T findMin() {
         return pienin;
     }
     
@@ -35,10 +38,10 @@ public class FibonacciKeko {
      * Poistaa keon pienimmän alkion ja palauttaa sen sitten.
      * @return Keon pienin alkio.
      */
-    public FibonacciRuutu deleteMin() {
-        FibonacciRuutu tulos = pienin;
+    public T deleteMin() {
+        T tulos = pienin;
         if (tulos == null) return tulos;
-        yhdistaVierusListat(tulos.lapsi, tulos);//kaikki lapset pitaa lisata
+        yhdistaVierusListat((T)tulos.getLapsi(), tulos);//kaikki lapset pitaa lisata
         throw new UnsupportedOperationException("Not supported yet");
     }
     
@@ -46,12 +49,12 @@ public class FibonacciKeko {
      * Lisää solmun kekoon.
      * @param solmu Solmu joka lisätään kekoon.
      */
-    public void lisaa(FibonacciRuutu solmu) {
+    public void lisaa(T solmu) {
         if (pienin == null) {
             pienin = solmu;
         } else {
             yhdistaVierusListat(solmu, pienin);
-            if (solmu.compareTo(pienin) < 0) {
+            if (vertailija.compare(solmu, pienin) < 0) {
                 pienin = solmu;
             }
         }
@@ -63,7 +66,7 @@ public class FibonacciKeko {
      * @param o Alkio jonka avainta pienennetään
      * @param key Avaimen uusi arvo. Oltava vanhaa arvoa pienempi.
      */
-    public void decreaseKey(FibonacciRuutu o, Comparable key) {
+    public void decreaseKey(T o, Comparable key) {
         //if (o.getKey().compareTo(key) < 0) throw new IllegalArgumentException("Uusi avain on vanhaa isompi.");
         //jatkuu
     }
@@ -73,27 +76,27 @@ public class FibonacciKeko {
      * @param lapsi Solmu josta tulee lapsi
      * @param vanhempi Solmu josta tulee vanhempi
      */
-    private void yhdista(FibonacciRuutu lapsi, FibonacciRuutu vanhempi) {
-        lapsi.oikea.vasen = lapsi.vasen.oikea;
-        lapsi.vasen.oikea = lapsi.oikea.vasen;
-        lapsi.vanhempi = vanhempi;
-        if (vanhempi.lapsi == null) {
-            vanhempi.lapsi = lapsi;
+    private void yhdista(T lapsi, T vanhempi) {
+        lapsi.getOikea().setVasen(lapsi.getVasen().getOikea());
+        lapsi.getVasen().setOikea(lapsi.getOikea().getVasen());
+        lapsi.setVanhempi(vanhempi);
+        if (vanhempi.getLapsi() == null) {
+            vanhempi.setLapsi(lapsi);
         } else {
             yhdistaVierusListat(lapsi, vanhempi);
         }
-        vanhempi.lapsiSolmujenMaara++;
-        lapsi.merkitty = false;
+        vanhempi.setLapsiSolmujenMaara(vanhempi.getLapsiSolmujenMaara()+1);
+        lapsi.setMerkitty(false);
     }
     
     
-    private void yhdistaVierusListat(FibonacciRuutu a, FibonacciRuutu b) {
+    private void yhdistaVierusListat(T a, T b) {
         if (a == null || b == null) return;
-        FibonacciRuutu apusolmu = a.oikea;
-        a.oikea = b.oikea;
-        a.oikea.vasen = a;
-        b.oikea = apusolmu;
-        b.oikea.vasen = b;
+        T apusolmu = (T)a.getOikea();
+        a.setOikea(b.getOikea());
+        a.getOikea().setVasen(a);
+        b.setOikea(apusolmu);
+        b.getOikea().setVasen(b);
         
 //        a.vasen = b;
 //        a.oikea = b.oikea;

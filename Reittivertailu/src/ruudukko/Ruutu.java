@@ -10,7 +10,7 @@ package ruudukko;
  * @author Antti
  * @see Ruudukko
  */
-public class Ruutu implements Comparable<Ruutu> {
+public class Ruutu extends YhdistelmaSolmu {
 
     private Ruudukko ruudukko;
     private boolean este;
@@ -20,16 +20,6 @@ public class Ruutu implements Comparable<Ruutu> {
     private int y;
     private double etaisyysAlusta;
     private Ruutu edellinen;
-
-    /**
-     * Toistaiseksi vain dijkstra:n compareTo.
-     * @param o
-     * @return 
-     */
-    @Override
-    public int compareTo(Ruutu o) {
-        return (int)(etaisyysAlusta-o.etaisyysAlusta);
-    }
     
     /**
      * Kuvaa ruudun tilaa algoritmissa.
@@ -54,7 +44,7 @@ public class Ruutu implements Comparable<Ruutu> {
         this.y = y;
         tulkitseMerkki(ruutu);
     }
-    
+
     private void alustaMuuttujat() {
         vaihe = Vaihe.KASITTELEMATON;
         etaisyysAlusta = Double.POSITIVE_INFINITY;

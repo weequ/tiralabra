@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
+import tietorakenteet.PaivittyvaPrioriteettiJono;
 
 /**
  * Malli lyhimmän polun hakualgoritmeille. Maarittelee niille yhteisiä ominaisuuksia sekä toteuttaa osan niistä.
@@ -23,13 +24,13 @@ public abstract class LyhimmanPolunAlgoritmi {
      */
     protected Ruudukko ruudukko;
     
-    private Queue<Ruutu> ruutuJono;
+    private PaivittyvaPrioriteettiJono<Ruutu> ruutuJono;
     
     /**
      * Alustaa algoritmin
      * @param ruudukko Ruudukko, eli verkko, jossa algoritmi etenee.
      */
-    public LyhimmanPolunAlgoritmi(Ruudukko ruudukko, PriorityQueue ruutuJono) {
+    public LyhimmanPolunAlgoritmi(Ruudukko ruudukko, PaivittyvaPrioriteettiJono ruutuJono) {
             this.ruudukko = ruudukko;
             this.ruutuJono = ruutuJono;
             ruutuJono.offer(ruudukko.getLahto());
@@ -57,7 +58,7 @@ public abstract class LyhimmanPolunAlgoritmi {
     //public abstract boolean etene();
     public boolean etene() {
         int koko = ruutuJono.size();
-        System.out.println(koko);
+        //System.out.println(koko);
         if (koko == 0) return false;//Algoritmi ei päässyt loppuun
         Ruutu kasiteltavaRuutu = ruutuJono.poll();
         kasiteltavaRuutu.setVaihe(Ruutu.Vaihe.KASITELTY);
@@ -78,8 +79,9 @@ public abstract class LyhimmanPolunAlgoritmi {
             naapuri.setEtaisyysAlusta(etaisyysTahanNaapuriin);
             naapuri.setEdellinen(kasiteltavaRuutu);
             if (naapuri.getVaihe() == Ruutu.Vaihe.KASITTELYSSA) { //Koska javan priorityqueue ei tue päivitystä!
-                ruutuJono.remove(naapuri);//O(n)
-                ruutuJono.offer(naapuri);//Binäärikeko: O(log(n) Fibonacci keko: O(1)
+                ruutuJono.update(naapuri);
+                //ruutuJono.remove(naapuri);//O(n)
+                //ruutuJono.offer(naapuri);//Binäärikeko: O(log(n) Fibonacci keko: O(1)
             } else {
                 ruutuJono.offer(naapuri);
                 naapuri.setVaihe(Ruutu.Vaihe.KASITTELYSSA);
