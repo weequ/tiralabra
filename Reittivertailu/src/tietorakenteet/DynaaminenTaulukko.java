@@ -50,6 +50,11 @@ public class DynaaminenTaulukko<E> {
         return alkiot[sijainti];
     }
     
+    /**
+     * Poistaa alkion sijainnista ja pienentää taulukon kokoa.
+     * @param sijainti Sijainti josta alkio poistetaan.
+     * @return 
+     */
     public E poistaAlkio(int sijainti) {
         E tulos = alkiot[sijainti];
         for (int i = sijainti; i < koko-1; i++) {

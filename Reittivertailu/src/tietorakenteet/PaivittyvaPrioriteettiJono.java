@@ -5,7 +5,7 @@
 package tietorakenteet;
 
 /**
- *
+ * Määrittelee päivittyvän prioriteettijonon operaatiot.
  * @author Antti
  */
 public interface PaivittyvaPrioriteettiJono<T> {
@@ -17,4 +17,6 @@ public interface PaivittyvaPrioriteettiJono<T> {
     public T poll();
     
     public int size();
+    
+    public void clear();
 }

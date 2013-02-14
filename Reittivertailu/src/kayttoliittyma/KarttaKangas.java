@@ -22,7 +22,7 @@ public class KarttaKangas extends JComponent{
     /**
      * Ruudun koko (korkeus ja leveys) pikseleinä
      */
-    private static final int RUUDUNKOKO = 10;
+    private static final int RUUDUNKOKO = 7;
     
     /**
      * Kankaalle piirrettävä ruudukko
@@ -96,18 +96,23 @@ public class KarttaKangas extends JComponent{
     
     
     private void piirraRuutujenTilat(Graphics g) {
-        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
-            for (int x = 0; x < ruudukko.getLeveys(); x++) {
-                piirraRuudunTila(g, ruudukko.getRuutu(x, y));
-            }
+        for (Ruutu ruutu : ruudukko) {
+            piirraRuudunTila(g, ruutu);
         }
     }
     
     private void piirraYhteydetEdellisiin(Graphics g) {
-        for (int y = 0; y < ruudukko.getKorkeus(); y++) {
-            for (int x = 0; x < ruudukko.getLeveys(); x++) {
-                piirraYhteysEdelliseen(g, ruudukko.getRuutu(x, y));
-            }
+        for (Ruutu ruutu : ruudukko) {
+            piirraYhteysEdelliseen(g, ruutu);
+        }
+    }
+    
+    private void piirraLyhyinReitti(Graphics g) {
+        g.setColor(Color.ORANGE);
+        Ruutu ruutu = ruudukko.getMaali();
+        while(ruutu != null) {
+            g.fillRect(ruutu.getX()*RUUDUNKOKO, ruutu.getY()*RUUDUNKOKO, RUUDUNKOKO, RUUDUNKOKO);
+            ruutu = ruutu.getEdellinen();
         }
     }
     
@@ -120,6 +125,7 @@ public class KarttaKangas extends JComponent{
         //super.paint(g);
         if (ruudukko == null) return;
         piirraRuutujenTilat(g);
+        piirraLyhyinReitti(g);
         piirraYhteydetEdellisiin(g);
         piirraLahtoJaMaali(g);
     }

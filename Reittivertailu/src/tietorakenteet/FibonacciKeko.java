@@ -89,10 +89,14 @@ public class FibonacciKeko<T extends FibonacciSolmu> {
         lapsi.setMerkitty(false);
     }
     
-    
+    /**
+     * Yhdistää kaksi vieruslistaa
+     * @param a 
+     * @param b
+     */
     private void yhdistaVierusListat(T a, T b) {
         if (a == null || b == null) return;
-        T apusolmu = (T)a.getOikea();
+        T apusolmu = (T) a.getOikea();
         a.setOikea(b.getOikea());
         a.getOikea().setVasen(a);
         b.setOikea(apusolmu);

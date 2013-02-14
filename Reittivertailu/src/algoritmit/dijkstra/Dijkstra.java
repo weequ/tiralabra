@@ -1,7 +1,6 @@
 package algoritmit.dijkstra;
 
-import algoritmit.LyhimmanPolunAlgoritmi;
-import java.util.PriorityQueue;
+import algoritmit.AhneLyhimmanPolunAlgoritmi;
 import ruudukko.Ruudukko;
 import tietorakenteet.BinaariPrioriteettiJono;
 
@@ -9,7 +8,7 @@ import tietorakenteet.BinaariPrioriteettiJono;
  * Dijkstra algoritmin toteuttava LyhimmänPolunAlgoritmi.
  * @author Antti
  */
-public class Dijkstra extends LyhimmanPolunAlgoritmi {
+public class Dijkstra extends AhneLyhimmanPolunAlgoritmi {
    
     
     /**

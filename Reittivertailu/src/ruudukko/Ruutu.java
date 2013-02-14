@@ -44,6 +44,26 @@ public class Ruutu extends YhdistelmaSolmu {
         this.y = y;
         tulkitseMerkki(ruutu);
     }
+    
+    /**
+     * Generoi satunnaisen ruudun joka on este parametrina annetulla todennäköisyydellä.
+     * @param ruudukko Ruudukko johon tämä ruutu kuuluu
+     * @param x Ruudun x koordinaatti
+     * @param y Ruudun y koordinaatti
+     * @param esteenTodennakoisyys Todennäköisyys jolla ruutu asetetaan esteeksi
+     */
+    public Ruutu(Ruudukko ruudukko, int x, int y, double esteenTodennakoisyys) {
+        alustaMuuttujat();
+        this.ruudukko = ruudukko;
+        this.x = x;
+        this.y = y;
+        if (Math.random() < esteenTodennakoisyys) {
+            este = true;
+        } else {
+            este = false;
+            kustannus = 1;
+        }
+    }
 
     private void alustaMuuttujat() {
         vaihe = Vaihe.KASITTELEMATON;
@@ -52,6 +72,16 @@ public class Ruutu extends YhdistelmaSolmu {
     }
     
     private void tulkitseMerkki(char ruutu) throws Exception {
+//        if (Math.random() < 0.25) {
+//            este = true;
+//        } else {
+//            este = false;
+//            kustannus = 1;
+//            //kustannus = 1+3*(int)(Math.random()*2);
+//        }
+//        if (0 < 1) return;
+        
+        
         if (ruutu >= '0' && ruutu <= '9') {
             este = false;
             kustannus = ruutu-'0';

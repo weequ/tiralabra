@@ -32,7 +32,6 @@ public class BinaariKeko<T extends BinaariSolmu> {
      * @param alkio Alkio joka lisätään kekoon
      */
     public void lisaa(T alkio) {
-        System.out.println("lisaa (binaarikeko) "+koko+", "+keko.getKoko());
         keko.lisaa(alkio);
         alkio.setSijaintiKeossa(koko);
         korjaaYlos(koko);

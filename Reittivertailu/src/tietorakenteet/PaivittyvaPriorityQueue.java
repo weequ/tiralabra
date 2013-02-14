@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- *
+ * Javan priorityqueueen lisätty alkion päivitysominaisuus.
  * @author Antti
  */
 public class PaivittyvaPriorityQueue<E> extends PriorityQueue<E> implements PaivittyvaPrioriteettiJono<E> {
@@ -22,9 +22,9 @@ public class PaivittyvaPriorityQueue<E> extends PriorityQueue<E> implements Paiv
     }
     
     @Override
-    public void update(E e) {
-        remove(e);
-        offer(e);
+    public void update(E e) {//Javan priority queue ei tue decrease-key operaatiota.
+        remove(e);//O(n)
+        offer(e);//O(log(n))
     }
     
 }

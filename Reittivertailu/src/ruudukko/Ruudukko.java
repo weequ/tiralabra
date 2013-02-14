@@ -1,11 +1,13 @@
 package ruudukko;
 
+import java.util.Iterator;
+
 /**
  * Kaksisuuntainen verkko, jossa jokaista solmua vastaa yksi ruutu.
  * @see Ruutu
  * @author Antti
  */
-public class Ruudukko {
+public class Ruudukko implements Iterable<Ruutu> {
     /**
      * Ruudukon sisältämät ruudut
      */
@@ -21,6 +23,16 @@ public class Ruudukko {
      */
     private Ruutu maali;
     
+    
+    public Ruudukko(int leveys, int korkeus, double esteenTodennakoisyys) {
+        ruudukko = new Ruutu[korkeus][leveys];
+        for (int y = 0; y < korkeus; y++) {
+            for (int x = 0; x < leveys; x++) {
+                ruudukko[y][x] = new Ruutu(this, x, y, esteenTodennakoisyys);
+            }    
+        }
+    }
+    
     /**
      * Ruudukon alustus rivinvaihdot sisältävästä merkkijonosta
      * @param ruudukkoString Rivinvaihdot sisältävä merkkijono.
@@ -35,7 +47,6 @@ public class Ruudukko {
      * @param rivit Jokainen alkio kuvaa yhtä riviä.
      * @throws Exception Jos syötteenä on eripituisia rivejä tai ei hyväksyttyjä merkkejä.
      */
-    
     public Ruudukko(String[] rivit) throws Exception {
         ruudukko = new Ruutu[rivit.length][rivit[0].length()];
         tulkkaaRivit(rivit);
@@ -119,6 +130,35 @@ public class Ruudukko {
      */
     public void setMaali(int x, int y) {
         maali = ruudukko[y][x];
+    }
+
+    @Override
+    public Iterator<Ruutu> iterator() {
+        return new Iterator<Ruutu>() {
+            int nextX = 0;
+            int nextY = 0;
+            @Override
+            public boolean hasNext() {
+                return (nextX < getLeveys() && nextY < getKorkeus());
+            }
+
+            @Override
+            public Ruutu next() {
+                Ruutu tulos = ruudukko[nextY][nextX];
+                if (nextX < getLeveys()-1) {
+                    nextX++;
+                } else {
+                    nextY++;
+                    nextX = 0;
+                }
+                return tulos;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException("Not supported.");
+            }
+        };
     }
     
     

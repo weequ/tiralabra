@@ -4,7 +4,8 @@
  */
 package reittivertailu;
 
-import algoritmit.LyhimmanPolunAlgoritmi;
+import algoritmit.BellmanFord;
+import algoritmit.AhneLyhimmanPolunAlgoritmi;
 import algoritmit.aTahti.ATahti;
 import algoritmit.dijkstra.Dijkstra;
 import java.io.FileNotFoundException;
@@ -23,7 +24,7 @@ public class Reittivertailu {
     private Ruudukko ruudukko;
     
     
-    private Reittivertailu() {
+    public Reittivertailu() {
         Lukija lukija = null;
         try {
             lukija = new Lukija("testikartta.txt");
@@ -32,21 +33,33 @@ public class Reittivertailu {
             System.exit(0);
         }
         try {
-            ruudukko = new Ruudukko(lukija.getText());
+            //ruudukko = new Ruudukko(lukija.getText());
+            ruudukko = new Ruudukko(100, 100, 0.2);
         } catch (Exception ex) {
             Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
         }
-        ruudukko.setLahto(7, 7);
-        ruudukko.setMaali(ruudukko.getLeveys()-1, ruudukko.getKorkeus()-1);
+        do {
+            ruudukko.setLahto(7-(int)(Math.random()*6), 7-(int)(Math.random()*6));
+        } while (ruudukko.getLahto().onkoEste());
+        do {
+            //System.out.println("asetetaan maalia");
+            ruudukko.setMaali(ruudukko.getLeveys()-10+(int)(Math.random()*6), ruudukko.getKorkeus()-10+(int)(Math.random()*6));
+        } while(ruudukko.getMaali().onkoEste());
         GUI gui = new GUI(ruudukko);
         gui.pack();
-        LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
+        //LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
         //LyhimmanPolunAlgoritmi dijkstra = new Dijkstra(ruudukko);
+        //dijkstra.suorita(100);
+        BellmanFord bF = new BellmanFord(ruudukko);
+        AhneLyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
         dijkstra.suorita(50);
+        //bF.suorita(0);
+        System.out.println("valmis");
     }
     
-    public static void main(String[] args) {
-        new Reittivertailu();
+    public void kaynnistaVertailu() {
+        
     }
+    
 }
