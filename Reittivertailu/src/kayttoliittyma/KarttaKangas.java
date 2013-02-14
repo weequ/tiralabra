@@ -22,7 +22,7 @@ public class KarttaKangas extends JComponent{
     /**
      * Ruudun koko (korkeus ja leveys) pikseleinä
      */
-    private static final int RUUDUNKOKO = 7;
+    private static final int RUUDUNKOKO = 3;
     
     /**
      * Kankaalle piirrettävä ruudukko
@@ -90,7 +90,7 @@ public class KarttaKangas extends JComponent{
         Ruutu edellinen = ruutu.getEdellinen();
         if (edellinen == null) return;
         g.setColor(Color.PINK);
-        g.fillOval(ruutu.getX()*RUUDUNKOKO+RUUDUNKOKO/2-2, ruutu.getY()*RUUDUNKOKO+RUUDUNKOKO/2-2, 4, 4);
+        //g.fillOval(ruutu.getX()*RUUDUNKOKO+RUUDUNKOKO/2-2, ruutu.getY()*RUUDUNKOKO+RUUDUNKOKO/2-2, 4, 4);
         g.drawLine(edellinen.getX()*RUUDUNKOKO+RUUDUNKOKO/2, edellinen.getY()*RUUDUNKOKO+RUUDUNKOKO/2, ruutu.getX()*RUUDUNKOKO+RUUDUNKOKO/2, ruutu.getY()*RUUDUNKOKO+RUUDUNKOKO/2);
     }
     

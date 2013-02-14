@@ -34,7 +34,7 @@ public class Reittivertailu {
         }
         try {
             //ruudukko = new Ruudukko(lukija.getText());
-            ruudukko = new Ruudukko(100, 100, 0.2);
+            ruudukko = new Ruudukko(300, 300, 0.3);
         } catch (Exception ex) {
             Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
             System.exit(0);
@@ -53,7 +53,7 @@ public class Reittivertailu {
         //dijkstra.suorita(100);
         BellmanFord bF = new BellmanFord(ruudukko);
         AhneLyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
-        dijkstra.suorita(50);
+        dijkstra.suorita(10);
         //bF.suorita(0);
         System.out.println("valmis");
     }
