@@ -9,6 +9,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 import ruudukko.Ruudukko;
@@ -22,7 +24,7 @@ public class KarttaKangas extends JComponent{
     /**
      * Ruudun koko (korkeus ja leveys) pikseleinä
      */
-    private static final int RUUDUNKOKO = 3;
+    private static final int RUUDUNKOKO = 8;
     
     /**
      * Kankaalle piirrettävä ruudukko
@@ -34,7 +36,7 @@ public class KarttaKangas extends JComponent{
      * @param ruudukko Ruudukko joka asetetaan piirrettäväksi
      */
     
-    public KarttaKangas(Ruudukko ruudukko) {
+    public KarttaKangas(final Ruudukko ruudukko) {
         setRuudukko(ruudukko);
         ActionListener taskPerformer = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -44,6 +46,23 @@ public class KarttaKangas extends JComponent{
         };
 
         new Timer(100, taskPerformer).start();
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int x = e.getX()/RUUDUNKOKO;
+                int y = e.getY()/RUUDUNKOKO;
+                switch (e.getButton()) {
+                    case MouseEvent.BUTTON1://Vasen
+                        ruudukko.setLahto(x, y);
+                        break;
+                    case MouseEvent.BUTTON3://Oikea
+                        ruudukko.setMaali(x, y);
+                        break;
+                }
+                ((GUI)getFocusCycleRootAncestor()).getAlgoritmi().alusta();
+            }
+        
+        });
     }
     /**
      * Luo tyhjän karttakankaan
@@ -60,6 +79,11 @@ public class KarttaKangas extends JComponent{
         this.ruudukko = ruudukko;
         Dimension koko = new Dimension(ruudukko.getLeveys()*RUUDUNKOKO, ruudukko.getKorkeus()*RUUDUNKOKO);
         setPreferredSize(koko);
+        repaint();
+    }
+    
+    public Ruudukko getRuudukko() {
+        return ruudukko;
     }
     
     

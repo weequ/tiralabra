@@ -54,12 +54,38 @@ public class BellmanFord extends LyhimmanPolunAlgoritmi{
     }
     
     /**
+     * Tutkii löytyykö ruudukosta negatiivinen sykli.
+     * @return True jos löytyy
+     */
+    private boolean onkoNegatiivisiaSykleja() {
+        for (Ruutu kasiteltavaRuutu : ruudukko) {
+            if (kasiteltavaRuutu.onkoEste()) continue;
+            for (Ruutu naapuri: kasiteltavaRuutu.getNaapurit()) {
+                if (naapuri == null) continue;
+                if (kasiteltavaRuutu.getEtaisyysAlusta()+naapuri.getKustannus() < naapuri.getEtaisyysAlusta()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+     
+    /**
+     * @return true jos on negatiivinen sykli löytyy.
      * @see LyhimmanPolunAlgoritmi#suorita(int) 
      */
-    @Override
-    public void suorita(int aika) {
-        super.suorita(aika);
-        System.out.println("Etaisyys: "+ruudukko.getMaali().getEtaisyysAlusta());
+    public boolean suoritaJaTutkiOnkoNegatiivisiaSyksleja(int aika) {
+        suorita(aika);
+        return onkoNegatiivisiaSykleja();
+    }
+    
+    /**
+     * @return true jos negatiivinen sykli löytyy 
+     * @see LyhimmanPolunAlgoritmi#suorita() 
+     */
+    public boolean suoritaJaTutkiOnkoNegatiivisiaSyksleja() {
+        suorita(0);
+        return onkoNegatiivisiaSykleja();
     }
     
     /**

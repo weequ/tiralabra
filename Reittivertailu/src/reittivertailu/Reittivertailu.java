@@ -1,11 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package reittivertailu;
 
-import algoritmit.BellmanFord;
 import algoritmit.AhneLyhimmanPolunAlgoritmi;
+import algoritmit.BellmanFord;
+import algoritmit.LyhimmanPolunAlgoritmi;
 import algoritmit.aTahti.ATahti;
 import algoritmit.dijkstra.Dijkstra;
 import java.io.FileNotFoundException;
@@ -13,53 +10,69 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import kayttoliittyma.GUI;
 import ruudukko.Ruudukko;
+import ruudukko.Ruutu;
 import tiedostonLuku.Lukija;
 
 /**
- * Luokka josta kaikki lähtee liikkeelle. 
+ * Vertailuluokka
  * @author Antti
  */
 public class Reittivertailu {
 
     private Ruudukko ruudukko;
+    private LyhimmanPolunAlgoritmi algoritmi;
+    int ruudukonLeveys, ruudukonKorkeus;
+    double esteenTn;
     
-    
-    public Reittivertailu() {
-        Lukija lukija = null;
-        try {
-            lukija = new Lukija("testikartta.txt");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
+    public Reittivertailu(int ruudukonLeveys, int ruudukonKorkeus, double esteenTn) {
+        if (ruudukonLeveys < 20 || ruudukonKorkeus < 20) {
+            throw new IllegalArgumentException("Ruudukon oltava kooltaan vähintään 20X20.");
         }
-        try {
-            //ruudukko = new Ruudukko(lukija.getText());
-            ruudukko = new Ruudukko(300, 300, 0.3);
-        } catch (Exception ex) {
-            Logger.getLogger(Reittivertailu.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
-        }
-        do {
-            ruudukko.setLahto(7-(int)(Math.random()*6), 7-(int)(Math.random()*6));
-        } while (ruudukko.getLahto().onkoEste());
-        do {
-            //System.out.println("asetetaan maalia");
-            ruudukko.setMaali(ruudukko.getLeveys()-10+(int)(Math.random()*6), ruudukko.getKorkeus()-10+(int)(Math.random()*6));
-        } while(ruudukko.getMaali().onkoEste());
-        GUI gui = new GUI(ruudukko);
-        gui.pack();
-        //LyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
-        //LyhimmanPolunAlgoritmi dijkstra = new Dijkstra(ruudukko);
-        //dijkstra.suorita(100);
-        BellmanFord bF = new BellmanFord(ruudukko);
-        AhneLyhimmanPolunAlgoritmi dijkstra = new ATahti(ruudukko);
-        dijkstra.suorita(10);
-        //bF.suorita(0);
-        System.out.println("valmis");
+        this.ruudukonLeveys = ruudukonLeveys;
+        this.ruudukonKorkeus = ruudukonKorkeus;
+        this.esteenTn = esteenTn;
+        this.ruudukko = new Ruudukko(ruudukonLeveys, ruudukonKorkeus, esteenTn);
     }
     
-    public void kaynnistaVertailu() {
-        
+    private void arvoRuudukko() {
+        int leveys = ruudukko.getLeveys();
+        int korkeus = ruudukko.getKorkeus();
+        do {
+            ruudukko.arvoEsteet(esteenTn);
+        } while (!
+                    (ruudukko.setLahtoTyhjaan(2, 2, 10, 10) && 
+                     ruudukko.setMaaliTyhjaan(leveys-10, korkeus-10, leveys-2, korkeus-2))
+                );//Arvotaan kunnes lähtö ja maali saadaan asetettua tyhjään ruutuun.
+    }
+    
+    private long mittaaSuoritusAika(LyhimmanPolunAlgoritmi algoritmi) {
+        return algoritmi.suorita();
+    }
+    
+    public void vertaa(int aika) {
+        long kokoAika = 0;
+        double[] kokoAjat = new double[3];
+        int[] tulokset = new int[3];
+        while (true) {
+            arvoRuudukko();
+            LyhimmanPolunAlgoritmi[] algoritmit = {new Dijkstra(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
+                new ATahti(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
+                new BellmanFord(ruudukko)};
+            for (int i = 0; i < algoritmit.length; i++) {
+                if (kokoAjat[i] > aika) continue;
+                algoritmit[i].alusta();
+                kokoAjat[i] += mittaaSuoritusAika(algoritmit[i]);
+                if (kokoAjat[i] < aika) tulokset[i]++;
+            }
+            int montako = 0;
+            for (int i = 0; i < kokoAjat.length; i++) {
+                if (kokoAjat[i] > aika) montako++;
+            }
+            if (montako == 3) break;
+        }
+        for (int i = 0; i < kokoAjat.length; i++) {
+            System.out.println("Tulos " + i + ":" + tulokset[i]);
+        }
     }
     
 }

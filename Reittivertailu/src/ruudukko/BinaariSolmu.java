@@ -8,7 +8,19 @@ package ruudukko;
  *
  * @author Antti
  */
-public interface BinaariSolmu {
-    public void setSijaintiKeossa(int sijainti);
-    public int getSijaintiKeossa();
+public class BinaariSolmu {
+    private int sijaintiBinaariKeossa;
+    
+    public BinaariSolmu() {
+        sijaintiBinaariKeossa = -1;
+    }
+    
+    public void setSijaintiKeossa(int sijainti) {
+        this.sijaintiBinaariKeossa = sijainti;
+    }
+    
+    
+    public int getSijaintiKeossa() {
+        return sijaintiBinaariKeossa;
+    }
 }

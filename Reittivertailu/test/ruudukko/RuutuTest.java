@@ -115,9 +115,9 @@ public class RuutuTest {
         Ruutu r = ruudukko.getRuutu(0, 0);
         Ruutu[] tulos = new Ruutu[] {
             ruudukko.getRuutu(-1, 0),
-            ruudukko.getRuutu(+1, 0),
             ruudukko.getRuutu(0, -1),
-            ruudukko.getRuutu(0, +1)
+            ruudukko.getRuutu(1, 0),
+            ruudukko.getRuutu(0, 1)
         };
         assertArrayEquals(r.getNaapurit(), tulos);
     }

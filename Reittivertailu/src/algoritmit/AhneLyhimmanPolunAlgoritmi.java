@@ -4,9 +4,12 @@
  */
 package algoritmit;
 
+import java.util.Comparator;
 import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
+import tietorakenteet.BinaariPrioriteettiJono;
 import tietorakenteet.PaivittyvaPrioriteettiJono;
+import tietorakenteet.PaivittyvaPriorityQueue;
 
 /**
  * Malli ahneelle lyhimmän polun hakualgoritmeille. Dijkstra ja A* toimivat tällä, mutta eri parametreilla.
@@ -16,16 +19,30 @@ public class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
     
     private PaivittyvaPrioriteettiJono<Ruutu> ruutuJono;
     
+    
+    public static enum JonoTyyppi {BINAARI, JAVA_PRIORITYQUEUE};
     /**
      * Alustaa algoritmin
      * @param ruudukko Ruudukko, eli verkko, jossa algoritmi etenee.
      * @param ruutuJono PrioriteettiJono joka järjestää solmuja.
      */
-    public AhneLyhimmanPolunAlgoritmi(Ruudukko ruudukko, PaivittyvaPrioriteettiJono ruutuJono) {
-            super(ruudukko);
-            this.ruutuJono = ruutuJono;
-            alusta();
+    public AhneLyhimmanPolunAlgoritmi(Ruudukko ruudukko, JonoTyyppi jonoTyyppi, Comparator<Ruutu> vertailija) {
+            this(ruudukko, jonoTyyppi, vertailija, 11);
     }
+    
+    
+    public AhneLyhimmanPolunAlgoritmi(Ruudukko ruudukko, JonoTyyppi jonoTyyppi, Comparator<Ruutu> vertailija, int aloitusKapasiteetti) {
+        super(ruudukko);
+        switch (jonoTyyppi) {
+            case BINAARI:
+                this.ruutuJono = new BinaariPrioriteettiJono<>(aloitusKapasiteetti, vertailija);
+                break;
+            case JAVA_PRIORITYQUEUE:
+                this.ruutuJono = new PaivittyvaPriorityQueue<>(aloitusKapasiteetti, vertailija);
+                break;
+        }
+    }
+    
 
     
     /**
@@ -33,12 +50,12 @@ public class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
      */
     @Override
     public boolean etene() {
+        if (ruudukko.getMaali().getVaihe() == Ruutu.Vaihe.KASITELTY) return false;
         int koko = ruutuJono.size();
-        //System.out.println(koko);
         if (koko == 0) return false;//Algoritmi ei päässyt loppuun
         Ruutu kasiteltavaRuutu = ruutuJono.poll();
         kasiteltavaRuutu.setVaihe(Ruutu.Vaihe.KASITELTY);
-        if (kasiteltavaRuutu.equals(ruudukko.getMaali())) return false;//uusi
+        //if (kasiteltavaRuutu.equals(ruudukko.getMaali())) return false;//uusi
         for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
             if (naapuri == null || naapuri.getVaihe() == Ruutu.Vaihe.KASITELTY || naapuri.onkoEste()){
                 continue;
@@ -72,12 +89,13 @@ public class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
     /**
      * @see LyhimmanPolunAlgoritmi#suorita(int) 
      */
+    @Override
     public final void suorita(int aika) {
         super.suorita(aika);
         if (ruutuJono.size() == 0) {
-            System.out.println("Ei reittiä lähdön ja maalin välillä!");
+            //System.out.println("Ei reittiä lähdön ja maalin välillä!");
         } else {
-            System.out.println("Reitti maaliin löydetty. Reitin pituus: "+ruudukko.getMaali().getEtaisyysAlusta());
+            //System.out.println("Reitti maaliin löydetty. Reitin pituus: "+ruudukko.getMaali().getEtaisyysAlusta());
         }
     }
     

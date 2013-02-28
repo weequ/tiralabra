@@ -15,8 +15,8 @@ public class Dijkstra extends AhneLyhimmanPolunAlgoritmi {
      * Alustaa algoritmin
      * @param ruudukko Algoritmin käyttämä ruudukko
      */
-    public Dijkstra(Ruudukko ruudukko) {
-        super(ruudukko, new BinaariPrioriteettiJono<>(11, new DijkstraEtaisyyksienVertailija()));//new PriorityQueue<>(11, new DijkstraEtaisyyksienVertailija()));
+    public Dijkstra(Ruudukko ruudukko, JonoTyyppi jonoTyyppi) {
+        super(ruudukko, jonoTyyppi, new DijkstraEtaisyyksienVertailija());//new PriorityQueue<>(11, new DijkstraEtaisyyksienVertailija()));
     }
   
 }

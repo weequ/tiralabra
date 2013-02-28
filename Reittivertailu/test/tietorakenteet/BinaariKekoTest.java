@@ -19,7 +19,7 @@ import ruudukko.BinaariSolmu;
  */
 public class BinaariKekoTest {
     
-    class BinaariSolmuImpl implements BinaariSolmu {
+    class BinaariSolmuImpl extends BinaariSolmu {
 
         public int arvo;
         private int sijainti;

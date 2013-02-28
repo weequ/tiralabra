@@ -10,7 +10,7 @@ package ruudukko;
  * @author Antti
  * @see Ruudukko
  */
-public class Ruutu extends YhdistelmaSolmu {
+public class Ruutu extends BinaariSolmu {
 
     private Ruudukko ruudukko;
     private boolean este;
@@ -57,6 +57,10 @@ public class Ruutu extends YhdistelmaSolmu {
         this.ruudukko = ruudukko;
         this.x = x;
         this.y = y;
+        arvoEste(esteenTodennakoisyys);
+    }
+    
+    public void arvoEste(double esteenTodennakoisyys) {
         if (Math.random() < esteenTodennakoisyys) {
             este = true;
         } else {
@@ -71,17 +75,7 @@ public class Ruutu extends YhdistelmaSolmu {
         edellinen = null;
     }
     
-    private void tulkitseMerkki(char ruutu) throws Exception {
-//        if (Math.random() < 0.25) {
-//            este = true;
-//        } else {
-//            este = false;
-//            kustannus = 1;
-//            //kustannus = 1+3*(int)(Math.random()*2);
-//        }
-//        if (0 < 1) return;
-        
-        
+    private void tulkitseMerkki(char ruutu) throws Exception {     
         if (ruutu >= '0' && ruutu <= '9') {
             este = false;
             kustannus = ruutu-'0';

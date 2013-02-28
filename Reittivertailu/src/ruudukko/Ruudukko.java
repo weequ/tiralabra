@@ -16,7 +16,7 @@ public class Ruudukko implements Iterable<Ruutu> {
     /**
      * Ruutu josta reitin haku aloitetaan.
      */
-    private Ruutu lahto;
+    private Ruutu lahto;//Public jotta voidaan suoraan viitata tähän ruutuun keossa.
     
     /**
      * Ruutu johon reitinhaun on tarkoitus päättyä.
@@ -24,17 +24,23 @@ public class Ruudukko implements Iterable<Ruutu> {
     private Ruutu maali;
     
     
+    /**
+     * Luo ruudukon ja generoi esteet satunnaisesti parametrina annetulla todennäköisyydellä.
+     * @param leveys Ruudukon leveys
+     * @param korkeus Ruudukon korkeus
+     * @param esteenTodennakoisyys Todennäköisyys jolla yksittäinen ruutu asetetaan esteeksi.
+     */
     public Ruudukko(int leveys, int korkeus, double esteenTodennakoisyys) {
         ruudukko = new Ruutu[korkeus][leveys];
         for (int y = 0; y < korkeus; y++) {
             for (int x = 0; x < leveys; x++) {
                 ruudukko[y][x] = new Ruutu(this, x, y, esteenTodennakoisyys);
-            }    
+            }
         }
     }
     
     /**
-     * Ruudukon alustus rivinvaihdot sisältävästä merkkijonosta
+     * Luo ruudukon rivinvaihdot sisältävästä merkkijonosta
      * @param ruudukkoString Rivinvaihdot sisältävä merkkijono.
      * @throws Exception Jos syötteenä on eripituisia rivejä tai ei hyväksyttyjä merkkejä.
      */
@@ -52,6 +58,16 @@ public class Ruudukko implements Iterable<Ruutu> {
         tulkkaaRivit(rivit);
     }
     
+    
+    /**
+     * Arpoo esteen ruudukon jokaiseen ruutuun parametrina annetulla todennäköisyydellä.
+     * @param esteenTodennakoisyys Todennäköisyys jolla yksittäinen ruutu asetetaan esteeksi.
+     */
+    public void arvoEsteet(double esteenTodennakoisyys) {
+         for (Ruutu r : this) {
+                r.arvoEste(esteenTodennakoisyys);
+         }
+    }
     
     protected void tulkkaaRivit(String[] rivit) throws Exception {
         for (int y = 0; y < rivit.length; y++) {
@@ -116,11 +132,28 @@ public class Ruudukko implements Iterable<Ruutu> {
      * @param y lahtoruudun y koordinaatti
      */
     public void setLahto(int x, int y) {
-        if (lahto != null) {
-            lahto.setEtaisyysAlusta(Double.POSITIVE_INFINITY);
-        }
         lahto = ruudukko[y][x];
         lahto.setEtaisyysAlusta(0);
+    }
+    
+    /**
+     * Arpoo lähtöruudun annettuun suorakaiteeseen kunnes se ei ole este.
+     * @param x1 Vasen reuna
+     * @param y1 Yläreuna
+     * @param x2 Oikea reuna
+     * @param y2 Alareuna
+     * @return True jos tyhjä ruutu löytyi. False jos tyhjää ruutua ei löydy 1000 arvonnalla.
+     */
+    public boolean setLahtoTyhjaan(int x1, int y1, int x2, int y2) {
+        int epaonnistumiset = 0;
+        do {
+            epaonnistumiset++;
+            if (epaonnistumiset > 1000) {
+                return false;
+            }
+            setLahto(x2-(int)(Math.random()*x1), y2-(int)(Math.random()*y1));
+        } while (getLahto().onkoEste());
+        return true;
     }
     
     /**
@@ -130,6 +163,26 @@ public class Ruudukko implements Iterable<Ruutu> {
      */
     public void setMaali(int x, int y) {
         maali = ruudukko[y][x];
+    }
+    
+    /**
+     * Arpoo maaliruudun annettuun suorakaiteeseen kunnes se ei ole este.
+     * @param x1 Vasen reuna
+     * @param y1 Yläreuna
+     * @param x2 Oikea reuna
+     * @param y2 Alareuna
+     * @return True jos tyhjä ruutu löytyi. False jos tyhjää ruutua ei löydy 1000 arvonnalla.
+     */
+    public boolean setMaaliTyhjaan(int x1, int y1, int x2, int y2) {
+        int epaonnistumiset = 0;
+        do {
+            epaonnistumiset++;
+            if (epaonnistumiset > 1000) {
+                return false;
+            }
+            setMaali(x2-(int)(Math.random()*x1), y2-(int)(Math.random()*y1));
+        } while (getMaali().onkoEste());
+        return true;
     }
 
     @Override

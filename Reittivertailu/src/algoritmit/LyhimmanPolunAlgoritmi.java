@@ -20,7 +20,7 @@ public abstract class LyhimmanPolunAlgoritmi {
      *Algoritmin käyttämä ruudukko, eli verkko.
      */
     protected Ruudukko ruudukko;
-    
+    private Thread animoivaSaie;
     /**
      * Alustaa algoritmin.
      * @param ruudukko Ruudukko jossa algoritmi toimii.
@@ -43,23 +43,45 @@ public abstract class LyhimmanPolunAlgoritmi {
      * @param aika millisekunteja etenemisten välissä.
      * @see #etene()
      */
-    public void suorita(int aika) {
-        alusta();
-        while (etene()) {
-            try {
-                Thread.sleep(aika);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AhneLyhimmanPolunAlgoritmi.class.getName()).log(Level.SEVERE, null, ex);
+    public void suorita(final int aika) {
+        //alusta();
+        lopetaAnimointi();
+        Runnable suoritettava = new Runnable() {
+            @Override
+            public void run() {
+                while (etene()) {
+                    try {
+                        Thread.sleep(aika);
+                    } catch (InterruptedException ex) {
+                        break;
+                    }
+                }
             }
-        }
+        };
+        animoivaSaie = new Thread(suoritettava);
+        animoivaSaie.start();
+    }
+    
+
+    /**
+     * Lopettaa mahdollisesti käynnissä olevan suorita(int aika) metodin.
+     * Tällä metodilla saattaa kestää jonkun aikaa. Maksimissaan suorita metodille parametrina annettu aika + yhteen etene askeleeseen kuluma aika.
+     * Parempi tapa olisi varmaankin käyttää Thread.interrupt();
+     * @see #suorita(int) 
+     */
+    public void lopetaAnimointi() {
+        if (animoivaSaie != null) animoivaSaie.interrupt();
     }
     
     /**
      * vastaa suorita(0);
+     * @return Suorituksen kulunut aika millisekunteina.
      * @see #suorita(int) 
      */
-    public final void suorita() {
-        suorita(0);
+    public final long suorita() {
+        long aloitusAika = System.currentTimeMillis();
+        while (etene()) {}
+        return System.currentTimeMillis()-aloitusAika;
     }
 
     /**
