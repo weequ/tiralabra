@@ -15,11 +15,13 @@ import tietorakenteet.PaivittyvaPriorityQueue;
  * Malli ahneelle lyhimmän polun hakualgoritmeille. Dijkstra ja A* toimivat tällä, mutta eri parametreilla.
  * @author Antti
  */
-public class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
+public abstract class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
     
     private PaivittyvaPrioriteettiJono<Ruutu> ruutuJono;
     
-    
+    /**
+     * Tyyppejä ova BINAARI ja JAVA_PRIORITYQUEUE. JAVA_PRIORITYQUEUE ei kuitenkaan kuulu kurssiin.
+     */
     public static enum JonoTyyppi {BINAARI, JAVA_PRIORITYQUEUE};
     /**
      * Alustaa algoritmin
@@ -55,7 +57,6 @@ public class AhneLyhimmanPolunAlgoritmi extends LyhimmanPolunAlgoritmi{
         if (koko == 0) return false;//Algoritmi ei päässyt loppuun
         Ruutu kasiteltavaRuutu = ruutuJono.poll();
         kasiteltavaRuutu.setVaihe(Ruutu.Vaihe.KASITELTY);
-        //if (kasiteltavaRuutu.equals(ruudukko.getMaali())) return false;//uusi
         for (Ruutu naapuri : kasiteltavaRuutu.getNaapurit()) {
             if (naapuri == null || naapuri.getVaihe() == Ruutu.Vaihe.KASITELTY || naapuri.onkoEste()){
                 continue;

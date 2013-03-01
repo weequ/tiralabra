@@ -11,7 +11,7 @@ import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
 
 /**
- *
+ * Kaikille lyhimmanpolunalgoritmeille yhteisiä ominaisuuksia määrittelevä ja toteuttava luokka.
  * @author Antti
  */
 public abstract class LyhimmanPolunAlgoritmi {

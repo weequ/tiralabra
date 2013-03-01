@@ -8,7 +8,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
- * Ei kuulu kurssiin.
+ * Ei kuulu kurssiin. Jätetty ohjelmaan vaihtoehtoiseksi tietorakenteeksi vertailun vuoksi.
  * Javan priorityqueueen lisätty alkion päivitysominaisuus.
  * @author Antti
  */

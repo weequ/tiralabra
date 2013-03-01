@@ -5,25 +5,25 @@ import algoritmit.BellmanFord;
 import algoritmit.LyhimmanPolunAlgoritmi;
 import algoritmit.aTahti.ATahti;
 import algoritmit.dijkstra.Dijkstra;
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import kayttoliittyma.GUI;
 import ruudukko.Ruudukko;
-import ruudukko.Ruutu;
-import tiedostonLuku.Lukija;
 
 /**
- * Vertailuluokka
+ * Luokka jonka tehtävänä on vertailla Dijkstran, A* ja Bellman-Ford algoritmien suorituskykyä.
  * @author Antti
  */
 public class Reittivertailu {
 
     private Ruudukko ruudukko;
-    private LyhimmanPolunAlgoritmi algoritmi;
+    private LyhimmanPolunAlgoritmi[] algoritmit;
     int ruudukonLeveys, ruudukonKorkeus;
     double esteenTn;
     
+    /**
+     * Luo reittivertailu olion annetuilla parametreilla.
+     * @param ruudukonLeveys Minkä leveyisessä ruudukossa vertaillaan algoritmeja?
+     * @param ruudukonKorkeus Minkä korkeuisessa ruudukossa vertaillaan algoritmeja?
+     * @param esteenTn Todennäköisyys jolla yksittäinen ruutu asetetaan esteeksi.
+     */
     public Reittivertailu(int ruudukonLeveys, int ruudukonKorkeus, double esteenTn) {
         if (ruudukonLeveys < 20 || ruudukonKorkeus < 20) {
             throw new IllegalArgumentException("Ruudukon oltava kooltaan vähintään 20X20.");
@@ -32,47 +32,68 @@ public class Reittivertailu {
         this.ruudukonKorkeus = ruudukonKorkeus;
         this.esteenTn = esteenTn;
         this.ruudukko = new Ruudukko(ruudukonLeveys, ruudukonKorkeus, esteenTn);
+        this.algoritmit = new LyhimmanPolunAlgoritmi[] {new Dijkstra(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
+                new ATahti(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
+                new BellmanFord(ruudukko)};
     }
     
+    /**
+     * Arpoo esteet ruudukkoon ja asettaa lähtö- ja maaliruudun esteettömään ruutuun. 
+     * Jos tyhjää lähtö tai maaliruutua ei löydy kulmien läheisyydestä niin ruudukko arvotaan uudelleen.
+     */
     private void arvoRuudukko() {
         int leveys = ruudukko.getLeveys();
         int korkeus = ruudukko.getKorkeus();
         do {
             ruudukko.arvoEsteet(esteenTn);
-        } while (!
-                    (ruudukko.setLahtoTyhjaan(2, 2, 10, 10) && 
-                     ruudukko.setMaaliTyhjaan(leveys-10, korkeus-10, leveys-2, korkeus-2))
-                );//Arvotaan kunnes lähtö ja maali saadaan asetettua tyhjään ruutuun.
+        } while ( !(ruudukko.setLahtoTyhjaan(1, 1, 3, 3) && 
+                ruudukko.setMaaliTyhjaan(leveys-5, korkeus-5, leveys-2, korkeus-2)));//Arvotaan kunnes lähtö ja maali saadaan asetettua tyhjään ruutuun.
     }
     
-    private long mittaaSuoritusAika(LyhimmanPolunAlgoritmi algoritmi) {
-        return algoritmi.suorita();
-    }
     
-    public void vertaa(int aika) {
-        long kokoAika = 0;
-        double[] kokoAjat = new double[3];
-        int[] tulokset = new int[3];
+    
+    /**
+     * Mittaa kuinka monta kertaa kukin algoritmi ehditään suoritaa parametrina annetussa ajassa.
+     * Aikaa mitataan vain itse algoritmin suorituksesta.
+     * Pseudokoodina:
+     * 1: Arvo ruudukko
+     * 2: Mittaa jokaisen algoritmin jota ei ole vielä suoritettu parametrina annettua aikaa suoritusaika tässä ruudukossa ja lisää se kokonaisaikaan
+     * 3: Jos mitattavaa vielä jäljellä niin takaisin vaiheeseen 1
+     * 4: Tulosta mittaustulokset
+     * @param mittausAika Kuinka pitkään kutakin algoritmia mitataan millisekunteina.
+     */
+    public void vertaa(int mittausAika) {
+        double[] mittausAjat = new double[algoritmit.length];
+        int[] suoritusKertojenLukumaarat = new int[algoritmit.length];
+        
         while (true) {
             arvoRuudukko();
-            LyhimmanPolunAlgoritmi[] algoritmit = {new Dijkstra(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
-                new ATahti(ruudukko, AhneLyhimmanPolunAlgoritmi.JonoTyyppi.BINAARI),
-                new BellmanFord(ruudukko)};
-            for (int i = 0; i < algoritmit.length; i++) {
-                if (kokoAjat[i] > aika) continue;
-                algoritmit[i].alusta();
-                kokoAjat[i] += mittaaSuoritusAika(algoritmit[i]);
-                if (kokoAjat[i] < aika) tulokset[i]++;
+            for (int moneskoAlgoritmi = 0; moneskoAlgoritmi < algoritmit.length; moneskoAlgoritmi++) {
+                if (mittausAjat[moneskoAlgoritmi] > mittausAika) continue;
+                algoritmit[moneskoAlgoritmi].alusta();
+                mittausAjat[moneskoAlgoritmi] += algoritmit[moneskoAlgoritmi].suorita();
+                if (mittausAjat[moneskoAlgoritmi] < mittausAika) suoritusKertojenLukumaarat[moneskoAlgoritmi]++;
             }
-            int montako = 0;
-            for (int i = 0; i < kokoAjat.length; i++) {
-                if (kokoAjat[i] > aika) montako++;
+            int montakoMittaamatta = 0;
+            for (int moneskoAlgoritmi = 0; moneskoAlgoritmi < mittausAjat.length; moneskoAlgoritmi++) {
+                if (mittausAjat[moneskoAlgoritmi] < mittausAika) montakoMittaamatta++;
             }
-            if (montako == 3) break;
+            if (montakoMittaamatta == 0) break;
         }
-        for (int i = 0; i < kokoAjat.length; i++) {
-            System.out.println("Tulos " + i + ":" + tulokset[i]);
+        
+        tulostaSuorituskertojenMaarat(mittausAika, suoritusKertojenLukumaarat);
+    }
+    
+    
+    private void tulostaSuorituskertojenMaarat(int mittausAika, int[] suoritusKertojenLukumaarat) {
+        System.out.println("----------------------------");
+        System.out.println("Vertailun tulokset "+ruudukonLeveys+"X"+ruudukonKorkeus+" ruudukossa "
+                + "jossa esteitä generoitu todennäköisyydellä "+esteenTn);
+        System.out.println("Algoritmien suoritustojen määrä " + mittausAika + " millisekunnissa:");
+        for (int i = 0; i < algoritmit.length; i++) {
+            System.out.println(algoritmit[i]+": " + suoritusKertojenLukumaarat[i]);
         }
+        System.out.println("----------------------------");
     }
     
 }

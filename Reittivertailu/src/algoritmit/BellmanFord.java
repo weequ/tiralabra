@@ -9,7 +9,7 @@ import ruudukko.Ruudukko;
 import ruudukko.Ruutu;
 
 /**
- *
+ * Bellman-Ford algoritmin toteuttava luokka.
  * @author Antti
  */
 public class BellmanFord extends LyhimmanPolunAlgoritmi{
@@ -98,6 +98,11 @@ public class BellmanFord extends LyhimmanPolunAlgoritmi{
             naapuri.setEtaisyysAlusta(etaisyysTahanNaapuriin);
             naapuri.setEdellinen(kasiteltavaRuutu);
         }
+    }
+    
+    @Override
+    public String toString() {
+        return "Bellman-Ford";
     }
     
 }

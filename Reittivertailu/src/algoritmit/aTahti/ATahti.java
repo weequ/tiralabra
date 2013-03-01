@@ -16,4 +16,10 @@ public class ATahti extends algoritmit.AhneLyhimmanPolunAlgoritmi {
         super(ruudukko, jonoTyyppi, new ATahtiEtaisyyksienVertailija(ruudukko));
     }
     
+    
+    @Override
+    public String toString() {
+        return "A*";
+    }
+    
 }
